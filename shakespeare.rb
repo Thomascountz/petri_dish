@@ -19,7 +19,7 @@ class Member
   def fitness
     @fitness ||= TARGET_GENOTYPE.zip(genotype).map do |target_gene, member_gene|
       target_gene == member_gene ? 1 : 0
-    end.sum**2
+    end.sum**5
   end
 
   def fitness_weight(population_fitness)
@@ -100,4 +100,9 @@ class Runner
 end
 
 # puts "generation,fitness"
+
+RubyVM::InstructionSequence.compile_option = {
+  tailcall_optimization: true,
+  trace_instruction: false
+}
 Runner.run(Population.new)
