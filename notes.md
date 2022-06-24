@@ -37,3 +37,13 @@
     - Rate: The probability of randomness being introduced to each piece of genetic data via mutation 
       - High mutation rates can negate heredity
 
+
+- Resources
+  - [Genetic Algorithms Explained By Example - Youtube](https://www.youtube.com/watch?v=uQj5UNhCPuo)
+  - [Genetic Algorithms for Autonomous Robot Navigation - Paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.208.9941&rep=rep1&type=pdf)
+  - [Nature of Code, Chapter 9 - The Evolution of Code - Book](https://natureofcode.com/book/chapter-9-the-evolution-of-code/)
+  - [Weighted Random Sampling in Ruby - Gist](https://gist.github.com/O-I/3e0654509dd8057b539a)
+  - [Tail Call Optimization in Ruby - Blog](https://nithinbekal.com/posts/ruby-tco/)
+  - [Neural network and genetic algorithm based global path planning in a static environment - Paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.583.3340&rep=rep1&type=pdf)
+  - [Traveling Salesman Problem using Genetic Algorithm - Blog](https://www.geeksforgeeks.org/traveling-salesman-problem-using-genetic-algorithm/)
+  - [A KNOWLEDGE-BASED GENETIC ALGORITHM FOR PATH PLANNING OF MOBILE ROBOTS - Thesis](https://atrium.lib.uoguelph.ca/xmlui/bitstream/handle/10214/22039/Hu_Yanrong_MSc.pdf?sequence=2)
