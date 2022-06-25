@@ -43,7 +43,7 @@ module Petridish
     end
 
     def initialize(members: nil)
-      @members = members || seed_population
+      @members = members || []
     end
 
     def select_parent
@@ -55,7 +55,7 @@ module Petridish
     attr_reader :genes
 
     def initialize(genes: nil)
-      @genes = genes || Array.new(World.configuration.target_genes.size) { World.configuration.genetic_material.sample }
+      @genes = genes || World.configuration.gene_instantiation_function.call
     end
 
     def fitness
@@ -83,6 +83,7 @@ module Petridish
       :genetic_material,
       :target_genes,
       :max_generations,
+      :gene_instantiation_function,
       :parent_selection_function,
       :crossover_function,
       :mutation_function,
@@ -94,6 +95,7 @@ module Petridish
       @genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
       @target_genes = "the quick brown fox jumped over the lazy white dog".chars
       @max_generations = 1
+      @gene_instantiation_function = Configuration.random_gene_instantiation_function
       @fitness_function = Configuration.linear_fitness_function
       @parent_selection_function = Configuration.random_parent_selection_function
       @crossover_function = Configuration.midpoint_crossover_function
@@ -101,6 +103,10 @@ module Petridish
     end
 
     class << self
+      def random_gene_instantiation_function
+        -> { Array.new(World.configuration.target_genes.size) { World.configuration.genetic_material.sample } }
+      end
+
       def random_parent_selection_function
         ->(population) do
           population.members.sample
