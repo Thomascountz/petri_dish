@@ -113,13 +113,19 @@ module Petridish
         end
       end
 
-      def probabilistically_fit_parent_selection_function
+      def roulette_wheel_parent_selection_function
         ->(population) do
           population_fitness = population.members.sum(&:fitness)
           population.members.max_by do |member|
             weighted_fitness = member.fitness / population_fitness.to_f
             rand**(1.0 / weighted_fitness)
           end
+        end
+      end
+
+      def twenty_percent_tournament_parent_selection_function
+        ->(population) do
+          population.members.sample(World.configuration.population_size / 20).max_by(&:fitness)
         end
       end
 
