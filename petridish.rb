@@ -24,9 +24,9 @@ module Petridish
         configuration.mutation_function.call(child_member).tap do |mutated_child|
           if metadata.higest_fitness < mutated_child.fitness
             metadata.higest_fitness = mutated_child.fitness
-            puts "#{mutated_child.genes.join("")}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}"
+            puts "#{mutated_child}\tFIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}"
           end
-          exit if mutated_child.genes == configuration.target_genes
+          exit if configuration.end_condition_function.call(mutated_child)
         end
       end
       new_population = Population.new(members: next_generation)
@@ -61,6 +61,10 @@ module Petridish
     def fitness
       @fitness ||= World.configuration.fitness_function.call(self)
     end
+
+    def to_s
+      genes.join("")
+    end
   end
 
   class Metadata
@@ -87,8 +91,10 @@ module Petridish
       :parent_selection_function,
       :crossover_function,
       :mutation_function,
-      :fitness_function
+      :fitness_function,
+      :end_condition_function
 
+    # Default to lazy dog example
     def initialize
       @population_size = 100
       @mutation_rate = 0.005
@@ -96,10 +102,11 @@ module Petridish
       @target_genes = "the quick brown fox jumped over the lazy white dog".chars
       @max_generations = 1
       @gene_instantiation_function = Configuration.random_gene_instantiation_function
-      @fitness_function = Configuration.linear_fitness_function
-      @parent_selection_function = Configuration.random_parent_selection_function
-      @crossover_function = Configuration.midpoint_crossover_function
+      @fitness_function = Configuration.exponential_fitness_function
+      @parent_selection_function = Configuration.twenty_percent_tournament_parent_selection_function
+      @crossover_function = Configuration.random_midpoint_crossover_function
       @mutation_function = Configuration.random_mutation_function
+      @end_condition_function = Configuration.genes_match_target_end_condition_function
     end
 
     class << self
@@ -131,7 +138,7 @@ module Petridish
 
       def twenty_percent_tournament_parent_selection_function
         ->(population) do
-          population.members.sample(World.configuration.population_size / 20).max_by(&:fitness)
+          population.members.sample(World.configuration.population_size * 0.2).max_by(&:fitness)
         end
       end
 
@@ -179,6 +186,12 @@ module Petridish
           member.genes.zip(World.configuration.target_genes).map do |target_gene, member_gene|
             target_gene == member_gene ? 1 : 0
           end.sum**3
+        end
+      end
+
+      def genes_match_target_end_condition_function
+        ->(member) do
+          member.genes == World.configuration.target_genes
         end
       end
     end
