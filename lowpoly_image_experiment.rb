@@ -35,3 +35,19 @@ draw.polygon(triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, tr
 
 draw.draw(image)
 image.write("output_2.png")
+
+def import_image(path)
+  image = Magick::Image.read(path).first
+
+  crop_size = [image.columns, image.rows].min
+  crop_x = (image.columns - crop_size) / 2
+  crop_y = (image.rows - crop_size) / 2
+
+  image
+    .crop(crop_x, crop_y, crop_size, crop_size)
+    .resize(100, 100)
+    .quantize(256, Magick::GRAYColorspace)
+    .write("input_convert.png")
+end
+
+import_image("astronaut.jpg")
