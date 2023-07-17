@@ -13,28 +13,57 @@ Triangle = Data.define(
   :x3,
   :y3,
   :grayscale
-)
+) do
+  def vertices
+    [
+      [x1, y1],
+      [x2, y2],
+      [x3, y3]
+    ]
+  end
+end
 
-triangle = Triangle.new(
-  x1: 5,
-  y1: 14,
-  x2: 49,
-  y2: 31,
-  x3: 55,
-  y3: 10,
-  grayscale: 160
-)
 
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
+GREYSCALE_VALUES = (0..255).to_a
+POPULATION_SIZE = 5
+MIN_MEMBER_SIZE = 10
+MAX_MEMBER_SIZE = 75
 
-image = Magick::Image.new(IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX) { |options| options.background_color = "white" }
-draw = Magick::Draw.new
-draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
-draw.polygon(triangle.x1, triangle.y1, triangle.x2, triangle.y2, triangle.x3, triangle.y3)
+def random_triangle
+  Triangle.new(
+    x1: rand(IMAGE_WIDTH_PX),
+    y1: rand(IMAGE_HEIGHT_PX),
+    x2: rand(IMAGE_WIDTH_PX),
+    y2: rand(IMAGE_HEIGHT_PX),
+    x3: rand(IMAGE_WIDTH_PX),
+    y3: rand(IMAGE_HEIGHT_PX),
+    grayscale: GREYSCALE_VALUES.sample
+  )
+end
 
-draw.draw(image)
-image.write("output_2.png")
+def random_member
+  Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
+end
+
+def random_population
+  Array.new(POPULATION_SIZE) { random_member }
+end
+
+def seed_population
+  random_population.each_with_index do |member, i|
+    image = Magick::Image.new(IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX) { |options| options.background_color = "white" }
+    draw = Magick::Draw.new
+    member.each do |triangle|
+      draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
+      draw.polygon(*triangle.vertices.flatten)
+    end
+
+    draw.draw(image)
+    image.write("population_#{i}.png")
+  end
+end
 
 def import_image(path)
   image = Magick::Image.read(path).first
@@ -45,9 +74,9 @@ def import_image(path)
 
   image
     .crop(crop_x, crop_y, crop_size, crop_size)
-    .resize(100, 100)
+    .resize(IMAGE_HEIGHT_PX, IMAGE_WIDTH_PX)
     .quantize(256, Magick::GRAYColorspace)
     .write("input_convert.png")
 end
 
-import_image("astronaut.jpg")
+seed_population
