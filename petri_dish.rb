@@ -3,7 +3,7 @@ RubyVM::InstructionSequence.compile_option = {
   trace_instruction: false
 }
 
-module Petridish
+module PetriDish
   class World
     def self.configuration
       @configuration ||= Configuration.new
@@ -23,8 +23,9 @@ module Petridish
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
         configuration.mutation_function.call(child_member).tap do |mutated_child|
           if metadata.higest_fitness < mutated_child.fitness
+            configuration.fittest_member_callback.call(mutated_child, metadata)
             metadata.higest_fitness = mutated_child.fitness
-            puts "#{mutated_child}\tFIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}"
+            puts "FIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}" if configuration.debug
           end
           exit if configuration.end_condition_function.call(mutated_child)
         end
@@ -92,7 +93,9 @@ module Petridish
       :crossover_function,
       :mutation_function,
       :fitness_function,
-      :end_condition_function
+      :end_condition_function,
+      :fittest_member_callback,
+      :debug
 
     # Default to lazy dog example
     def initialize
@@ -107,6 +110,8 @@ module Petridish
       @crossover_function = Configuration.random_midpoint_crossover_function
       @mutation_function = Configuration.random_mutation_function
       @end_condition_function = Configuration.genes_match_target_end_condition_function
+      @fittest_member_callback = ->(member, _metadata) { puts member }
+      @debug = false
     end
 
     class << self

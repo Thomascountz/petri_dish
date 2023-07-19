@@ -1,4 +1,5 @@
 require "bundler/inline"
+require_relative "./petri_dish"
 
 gemfile do
   source "https://rubygems.org"
@@ -23,20 +24,20 @@ Triangle = Data.define(
   end
 end
 
-
+NUMBER_OF_GENERATIONS = 40
 IMAGE_HEIGHT_PX = 500
 IMAGE_WIDTH_PX = 500
 GREYSCALE_VALUES = (0..255).to_a
 POPULATION_SIZE = 5
-MIN_MEMBER_SIZE = 150
+MIN_MEMBER_SIZE = 50
 MAX_MEMBER_SIZE = 300
-MIN_RADIUS = 20
-MAX_RADIUS = 80
+MIN_RADIUS = 10
+MAX_RADIUS = 40
 
 def random_triangle
   # Choose a random point within the image
   center_x, center_y = rand(IMAGE_WIDTH_PX), rand(IMAGE_HEIGHT_PX)
-  
+
   # Create a circle around the point with a random radius
   radius = rand(MIN_RADIUS..MAX_RADIUS)
 
@@ -81,25 +82,7 @@ def random_member
   Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
 end
 
-def random_population
-  Array.new(POPULATION_SIZE) { random_member }
-end
-
-def seed_population
-  random_population.each_with_index do |member, i|
-    image = Magick::Image.new(IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX) { |options| options.background_color = "white" }
-    draw = Magick::Draw.new
-    member.each do |triangle|
-      draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
-      draw.polygon(*triangle.vertices.flatten)
-    end
-
-    draw.draw(image)
-    image.write("population_#{i}.png")
-  end
-end
-
-def import_image(path)
+def import_image(path, output_path = "input_convert.png")
   image = Magick::Image.read(path).first
 
   crop_size = [image.columns, image.rows].min
@@ -110,8 +93,72 @@ def import_image(path)
     .crop(crop_x, crop_y, crop_size, crop_size)
     .resize(IMAGE_HEIGHT_PX, IMAGE_WIDTH_PX)
     .quantize(256, Magick::GRAYColorspace)
-    .write("input_convert.png")
+    .write(output_path)
+
+  image
 end
 
 # import_image("astronaut.jpg")
-seed_population
+# population = seed_population
+target_image = File.exist?("input_convert_500.png") ? Magick::Image.read("input_convert_500.png").first : import_image("astronaut.jpg", "input_convert_500.png")
+# target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
+
+# Configuration for the genetic algorithm
+PetriDish::World.configure do |config|
+  config.population_size = POPULATION_SIZE
+  config.mutation_rate = 0.005
+  config.max_generations = NUMBER_OF_GENERATIONS
+  config.target_genes = target_image
+  config.gene_instantiation_function = -> { random_member }
+  config.fitness_function = ->(member) { calculate_fitness(member, config.target_genes) }
+  config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
+  config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
+  config.mutation_function = ->(member) { replace_mutation_function(member, config.mutation_rate) }
+  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "output-#{metadata.generation_count}.png") }
+  config.end_condition_function = ->(_member) { false } # Define your own end condition function
+  config.debug = true
+end
+
+def member_to_image(member, width, height)
+  image = Magick::Image.new(width, height) { |options| options.background_color = "white" }
+  draw = Magick::Draw.new
+  member.genes.each do |triangle|
+    draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
+    draw.polygon(*triangle.vertices.flatten)
+  end
+
+  draw.draw(image)
+  image
+end
+
+def save_image(image, path)
+  image.write(path)
+end
+
+def calculate_fitness(member, target_image)
+  # Your code to generate an image from the member's genes (triangles)
+  individual_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
+
+  # Compare the individual image to the target image
+  _difference_image, difference = target_image.compare_channel(individual_image, Magick::MeanSquaredErrorMetric)
+
+  # Use the mean error per pixel as the fitness
+  1.0 / (difference + 0.0001) # The small constant in the denominator is to avoid division by zero
+end
+
+def random_midpoint_crossover_function(parent_1, parent_2)
+  midpoint = (parent_1.genes.size <= parent_2.genes.size) ? rand(parent_1.genes.size) : rand(parent_2.genes.size)
+  PetriDish::Member.new(genes: parent_1.genes[0...midpoint] + parent_2.genes[midpoint..])
+end
+
+def replace_mutation_function(member, mutation_rate)
+  mutated_genes = member.genes.dup
+  if PetriDish::World.configuration.mutation_rate > rand
+    gene_index = rand(mutated_genes.size)
+    mutated_genes[gene_index] = random_triangle
+  end
+  PetriDish::Member.new(genes: mutated_genes)
+end
+
+# Start the genetic algorithm
+PetriDish::World.run
