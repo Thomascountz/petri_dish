@@ -18,18 +18,34 @@ module PetriDish
     end
 
     def self.run(population: Population.seed)
+      puts metadata.start_time = Time.now if metadata.generation_count.zero?
       exit if metadata.generation_count >= configuration.max_generations
-      next_generation = configuration.population_size.times.map do
+    
+      # Determine the size of the elite group
+      elite_size = (configuration.population_size * 0.1).to_i
+    
+      # Sort the current population by fitness
+      sorted_population = population.members.sort_by(&:fitness)
+    
+      # Select the top individuals
+      elites = sorted_population.last(elite_size)
+    
+      # Generate the rest of the next generation
+      next_generation = (configuration.population_size - elite_size).times.map do
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
         configuration.mutation_function.call(child_member).tap do |mutated_child|
           if metadata.higest_fitness < mutated_child.fitness
             configuration.fittest_member_callback.call(mutated_child, metadata)
             metadata.higest_fitness = mutated_child.fitness
-            puts "FIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}" if configuration.debug
+            puts "FIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
           end
           exit if configuration.end_condition_function.call(mutated_child)
         end
       end
+    
+      # Include the elites in the next generation
+      next_generation.concat(elites)
+    
       new_population = Population.new(members: next_generation)
       metadata.increment_generation
       run(population: new_population)
@@ -70,11 +86,12 @@ module PetriDish
 
   class Metadata
     attr_reader :generation_count
-    attr_accessor :higest_fitness
+    attr_accessor :higest_fitness, :start_time
 
     def initialize
       @generation_count = 0
       @higest_fitness = 0
+      @start_time = nil
     end
 
     def increment_generation
@@ -164,7 +181,7 @@ module PetriDish
       def random_mutation_function
         ->(member) do
           mutated_genes = member.genes.map do |gene|
-            World.configuration.mutation_rate > rand ? World.configuration.genetic_material.sample : gene
+            (World.configuration.mutation_rate > rand) ? World.configuration.genetic_material.sample : gene
           end
           Member.new(genes: mutated_genes)
         end
@@ -173,7 +190,7 @@ module PetriDish
       def linear_fitness_function
         ->(member) do
           member.genes.zip(World.configuration.target_genes).map do |target_gene, member_gene|
-            target_gene == member_gene ? 1 : 0
+            (target_gene == member_gene) ? 1 : 0
           end.sum
         end
       end
@@ -181,7 +198,7 @@ module PetriDish
       def quadratic_fitness_function
         ->(member) do
           member.genes.zip(World.configuration.target_genes).map do |target_gene, member_gene|
-            target_gene == member_gene ? 1 : 0
+            (target_gene == member_gene) ? 1 : 0
           end.sum**2
         end
       end
@@ -189,7 +206,7 @@ module PetriDish
       def exponential_fitness_function
         ->(member) do
           member.genes.zip(World.configuration.target_genes).map do |target_gene, member_gene|
-            target_gene == member_gene ? 1 : 0
+            (target_gene == member_gene) ? 1 : 0
           end.sum**3
         end
       end

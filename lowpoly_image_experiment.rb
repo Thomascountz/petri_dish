@@ -24,15 +24,15 @@ Triangle = Data.define(
   end
 end
 
-NUMBER_OF_GENERATIONS = 40
-IMAGE_HEIGHT_PX = 500
-IMAGE_WIDTH_PX = 500
+NUMBER_OF_GENERATIONS = 500
+IMAGE_HEIGHT_PX = 100
+IMAGE_WIDTH_PX = 100
 GREYSCALE_VALUES = (0..255).to_a
-POPULATION_SIZE = 5
-MIN_MEMBER_SIZE = 50
-MAX_MEMBER_SIZE = 300
-MIN_RADIUS = 10
-MAX_RADIUS = 40
+POPULATION_SIZE = 500
+MIN_MEMBER_SIZE = 100
+MAX_MEMBER_SIZE = 500
+MIN_RADIUS = 5
+MAX_RADIUS = 10
 
 def random_triangle
   # Choose a random point within the image
@@ -64,20 +64,6 @@ def random_triangle
   )
 end
 
-# This implementation produced triangles that inherently avoided the border
-# and provided no controls of the size of the triangles
-# def random_triangle
-#   Triangle.new(
-#     x1: rand(IMAGE_WIDTH_PX),
-#     y1: rand(IMAGE_HEIGHT_PX),
-#     x2: rand(IMAGE_WIDTH_PX),
-#     y2: rand(IMAGE_HEIGHT_PX),
-#     x3: rand(IMAGE_WIDTH_PX),
-#     y3: rand(IMAGE_HEIGHT_PX),
-#     grayscale: GREYSCALE_VALUES.sample
-#   )
-# end
-
 def random_member
   Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
 end
@@ -100,27 +86,27 @@ end
 
 # import_image("astronaut.jpg")
 # population = seed_population
-target_image = File.exist?("input_convert_500.png") ? Magick::Image.read("input_convert_500.png").first : import_image("astronaut.jpg", "input_convert_500.png")
-# target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
+# target_image = File.exist?("input_convert_500.png") ? Magick::Image.read("input_convert_500.png").first : import_image("astronaut.jpg", "input_convert_500.png")
+target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
 
 # Configuration for the genetic algorithm
 PetriDish::World.configure do |config|
   config.population_size = POPULATION_SIZE
-  config.mutation_rate = 0.005
+  config.mutation_rate = 0.05
   config.max_generations = NUMBER_OF_GENERATIONS
   config.target_genes = target_image
   config.gene_instantiation_function = -> { random_member }
   config.fitness_function = ->(member) { calculate_fitness(member, config.target_genes) }
   config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
-  config.mutation_function = ->(member) { replace_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "output-#{metadata.generation_count}.png") }
+  config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
+  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/output-#{metadata.generation_count}.png") }
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
   config.debug = true
 end
 
 def member_to_image(member, width, height)
-  image = Magick::Image.new(width, height) { |options| options.background_color = "white" }
+  image = Magick::Image.new(width, height) { |options| options.background_color = "black" }
   draw = Magick::Draw.new
   member.genes.each do |triangle|
     draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
@@ -156,6 +142,13 @@ def replace_mutation_function(member, mutation_rate)
   if PetriDish::World.configuration.mutation_rate > rand
     gene_index = rand(mutated_genes.size)
     mutated_genes[gene_index] = random_triangle
+  end
+  PetriDish::Member.new(genes: mutated_genes)
+end
+
+def random_mutation_function(member, mutation_rate)
+  mutated_genes = member.genes.dup.map do |gene|
+    (rand < mutation_rate) ? random_triangle : gene
   end
   PetriDish::Member.new(genes: mutated_genes)
 end
