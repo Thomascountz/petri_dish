@@ -1,9 +1,11 @@
 require "bundler/inline"
+require "stackprof"
 require_relative "./petri_dish"
 
 gemfile do
   source "https://rubygems.org"
   gem "rmagick", require: "rmagick"
+  gem "pry"
 end
 
 Triangle = Data.define(
@@ -24,11 +26,11 @@ Triangle = Data.define(
   end
 end
 
-NUMBER_OF_GENERATIONS = 500
+NUMBER_OF_GENERATIONS = 100
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
 GREYSCALE_VALUES = (0..255).to_a
-POPULATION_SIZE = 500
+POPULATION_SIZE = 200
 MIN_MEMBER_SIZE = 100
 MAX_MEMBER_SIZE = 500
 MIN_RADIUS = 5
@@ -92,23 +94,41 @@ target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_
 # Configuration for the genetic algorithm
 PetriDish::World.configure do |config|
   config.population_size = POPULATION_SIZE
-  config.mutation_rate = 0.05
+  config.mutation_rate = 0.1
   config.max_generations = NUMBER_OF_GENERATIONS
   config.target_genes = target_image
   config.gene_instantiation_function = -> { random_member }
-  config.fitness_function = ->(member) { calculate_fitness(member, config.target_genes) }
+  config.fitness_function = ->(member) { calculate_fitness(member.genes, config.target_genes) }
   config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/output-#{metadata.generation_count}.png") }
+  config.fittest_member_callback = ->(member, metadata) { save_image(genes_to_image(member.genes, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/output-#{metadata.generation_count}.png") }
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
+  config.precalculate_fitness_function = ->(population) { precalculate_fitness_parallel(population) }
   config.debug = true
 end
+target_image = PetriDish::World.configuration.target_genes
 
-def member_to_image(member, width, height)
+NUM_RACTORS = 4 # ::Etc.nprocessors / 3 # A third of the number of avaiable logical cores
+RACTORS = (1..NUM_RACTORS).map do
+  Ractor.new(target_image) do |target_image|
+    loop do
+      # Receive the member and target image
+      genes = Ractor.receive
+
+      # Calculate the fitness
+      fitness = calculate_fitness(genes, target_image)
+
+      # Send the member and its fitness back to the main Ractor
+      Ractor.yield [genes, fitness]
+    end
+  end
+end
+
+def genes_to_image(genes, width, height)
   image = Magick::Image.new(width, height) { |options| options.background_color = "black" }
   draw = Magick::Draw.new
-  member.genes.each do |triangle|
+  genes.each do |triangle|
     draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
     draw.polygon(*triangle.vertices.flatten)
   end
@@ -121,9 +141,29 @@ def save_image(image, path)
   image.write(path)
 end
 
-def calculate_fitness(member, target_image)
+def precalculate_fitness_parallel(population)
+  # Send the member and target image to each Ractor
+  population.members.each_slice(population.members.size / NUM_RACTORS).with_index do |members, i|
+    members.each do |member|
+      genes = member.genes
+      Ractor.make_shareable(genes)
+      RACTORS[i].send(genes)
+    end
+  end
+
+  # Receive all the fitnesses from the Ractors to create new Members and return a new Population
+  genes_and_fitnesses = RACTORS.map { |ractor| ractor.take }
+
+  new_members = genes_and_fitnesses.map do |(genes, fitness)|
+    PetriDish::Member.new(genes: genes, fitness: fitness)
+  end
+
+  PetriDish::Population.new(members: new_members)
+end
+
+def calculate_fitness(genes, target_image)
   # Your code to generate an image from the member's genes (triangles)
-  individual_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
+  individual_image = genes_to_image(genes, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
 
   # Compare the individual image to the target image
   _difference_image, difference = target_image.compare_channel(individual_image, Magick::MeanSquaredErrorMetric)
@@ -154,4 +194,10 @@ def random_mutation_function(member, mutation_rate)
 end
 
 # Start the genetic algorithm
+# begin
+# StackProf.run(mode: :cpu, raw: true, out: "./out/stackprof-cpu-myapp.dump") do
 PetriDish::World.run
+#   end
+# rescue SystemExit, Interrupt
+#   puts "Program exited early"
+# end

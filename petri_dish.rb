@@ -1,3 +1,5 @@
+require "etc"
+
 RubyVM::InstructionSequence.compile_option = {
   tailcall_optimization: true,
   trace_instruction: false
@@ -19,17 +21,21 @@ module PetriDish
 
     def self.run(population: Population.seed)
       puts metadata.start_time = Time.now if metadata.generation_count.zero?
+      puts "\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
       exit if metadata.generation_count >= configuration.max_generations
-    
+
+      # Calculate the fitness of each member of the population
+      population = configuration.precalculate_fitness_function.call(population) if configuration.precalculate_fitness_function
+
       # Determine the size of the elite group
       elite_size = (configuration.population_size * 0.1).to_i
-    
+
       # Sort the current population by fitness
       sorted_population = population.members.sort_by(&:fitness)
-    
+
       # Select the top individuals
       elites = sorted_population.last(elite_size)
-    
+
       # Generate the rest of the next generation
       next_generation = (configuration.population_size - elite_size).times.map do
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
@@ -42,10 +48,10 @@ module PetriDish
           exit if configuration.end_condition_function.call(mutated_child)
         end
       end
-    
+
       # Include the elites in the next generation
       next_generation.concat(elites)
-    
+
       new_population = Population.new(members: next_generation)
       metadata.increment_generation
       run(population: new_population)
@@ -69,14 +75,11 @@ module PetriDish
   end
 
   class Member
-    attr_reader :genes
+    attr_reader :genes, :fitness
 
-    def initialize(genes: nil)
+    def initialize(genes: nil, fitness: nil)
       @genes = genes || World.configuration.gene_instantiation_function.call
-    end
-
-    def fitness
-      @fitness ||= World.configuration.fitness_function.call(self)
+      @fitness = fitness || World.configuration.fitness_function.call(self)
     end
 
     def to_s
@@ -112,6 +115,7 @@ module PetriDish
       :fitness_function,
       :end_condition_function,
       :fittest_member_callback,
+      :precalculate_fitness_function,
       :debug
 
     # Default to lazy dog example
@@ -128,6 +132,7 @@ module PetriDish
       @mutation_function = Configuration.random_mutation_function
       @end_condition_function = Configuration.genes_match_target_end_condition_function
       @fittest_member_callback = ->(member, _metadata) { puts member }
+      @precalculate_fitness_function = ->(_population) { false }
       @debug = false
     end
 
