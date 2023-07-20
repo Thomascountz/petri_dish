@@ -24,12 +24,12 @@ Triangle = Data.define(
   end
 end
 
-NUMBER_OF_GENERATIONS = 500
+NUMBER_OF_GENERATIONS = 5000
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
 GREYSCALE_VALUES = (0..255).to_a
 POPULATION_SIZE = 500
-MIN_MEMBER_SIZE = 100
+MIN_MEMBER_SIZE = 50
 MAX_MEMBER_SIZE = 500
 MIN_RADIUS = 5
 MAX_RADIUS = 10
@@ -100,7 +100,7 @@ PetriDish::World.configure do |config|
   config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/output-#{metadata.generation_count}.png") }
+  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/gen-#{metadata.generation_count}.png") }
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
   config.debug = true
 end
@@ -154,4 +154,5 @@ def random_mutation_function(member, mutation_rate)
 end
 
 # Start the genetic algorithm
+$stdout.sync = true
 PetriDish::World.run

@@ -20,6 +20,7 @@ module PetriDish
     def self.run(population: Population.seed)
       puts metadata.start_time = Time.now if metadata.generation_count.zero?
       exit if metadata.generation_count >= configuration.max_generations
+      puts "\t\t\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
     
       # Determine the size of the elite group
       elite_size = (configuration.population_size * 0.1).to_i
