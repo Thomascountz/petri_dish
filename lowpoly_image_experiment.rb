@@ -1,11 +1,11 @@
 require "bundler/inline"
-require "stackprof"
+# require "stackprof"
+require "ruby-prof"
 require_relative "./petri_dish"
 
 gemfile do
   source "https://rubygems.org"
   gem "rmagick", require: "rmagick"
-  gem "pry"
 end
 
 Triangle = Data.define(
@@ -26,15 +26,15 @@ Triangle = Data.define(
   end
 end
 
-NUMBER_OF_GENERATIONS = 100
+NUMBER_OF_GENERATIONS = 2000
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
 GREYSCALE_VALUES = (0..255).to_a
-POPULATION_SIZE = 200
-MIN_MEMBER_SIZE = 100
+POPULATION_SIZE = 500
+MIN_MEMBER_SIZE = 50
 MAX_MEMBER_SIZE = 500
 MIN_RADIUS = 5
-MAX_RADIUS = 10
+MAX_RADIUS = 20
 
 def random_triangle
   # Choose a random point within the image
@@ -94,17 +94,17 @@ target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_
 # Configuration for the genetic algorithm
 PetriDish::World.configure do |config|
   config.population_size = POPULATION_SIZE
-  config.mutation_rate = 0.1
+  config.mutation_rate = 0.05
   config.max_generations = NUMBER_OF_GENERATIONS
   config.target_genes = target_image
   config.gene_instantiation_function = -> { random_member }
-  config.fitness_function = ->(member) { calculate_fitness(member.genes, config.target_genes) }
-  config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
+  config.fitness_function = ->(member) { calculate_fitness_difference(member.genes, config.target_genes) }
+  config.parent_selection_function = PetriDish::Configuration.twenty_percent_tournament_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(genes_to_image(member.genes, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/output-#{metadata.generation_count}.png") }
+  config.fittest_member_callback = ->(member, metadata) { save_image(genes_to_image(member.genes, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/gen-#{metadata.generation_count}.png") }
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
-  config.precalculate_fitness_function = ->(population) { precalculate_fitness_parallel(population) }
+  config.precalculate_fitness_function = ->(population) { precalculate_fitness_concurrent(population) }
   config.debug = true
 end
 target_image = PetriDish::World.configuration.target_genes
@@ -141,6 +141,39 @@ def save_image(image, path)
   image.write(path)
 end
 
+def precalculate_fitness_concurrent(population)
+  target_image = PetriDish::World.configuration.target_genes
+  queue = Queue.new
+  population.members.each { |member| queue << member }
+
+  # Create a thread pool
+  threads = 3.times.map do
+    Thread.new(target_image) do |target_image|
+      # While there are still members in the queue
+      while (member = begin
+        queue.pop(true)
+      rescue
+        nil
+      end)
+        # Calculate the fitness
+        fitness = calculate_fitness_difference(member.genes, target_image)
+
+        # Store the genes and fitness
+        [member.genes, fitness]
+      end
+    end
+  end
+
+  # Wait for all threads to finish and collect their results
+  genes_and_fitnesses = threads.flat_map(&:value)
+
+  new_members = genes_and_fitnesses.map do |(genes, fitness)|
+    PetriDish::Member.new(genes: genes, fitness: fitness)
+  end
+
+  PetriDish::Population.new(members: new_members)
+end
+
 def precalculate_fitness_parallel(population)
   # Send the member and target image to each Ractor
   population.members.each_slice(population.members.size / NUM_RACTORS).with_index do |members, i|
@@ -172,6 +205,15 @@ def calculate_fitness(genes, target_image)
   1.0 / (difference + 0.0001) # The small constant in the denominator is to avoid division by zero
 end
 
+def calculate_fitness_difference(genes, target_image)
+  individual_image = genes_to_image(genes, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
+
+  # Get the mean error per pixel as the fitness
+  normalized_mean_error_per_pixel = target_image.difference(individual_image)[1]
+
+  1.0 - normalized_mean_error_per_pixel
+end
+
 def random_midpoint_crossover_function(parent_1, parent_2)
   midpoint = (parent_1.genes.size <= parent_2.genes.size) ? rand(parent_1.genes.size) : rand(parent_2.genes.size)
   PetriDish::Member.new(genes: parent_1.genes[0...midpoint] + parent_2.genes[midpoint..])
@@ -196,8 +238,18 @@ end
 # Start the genetic algorithm
 # begin
 # StackProf.run(mode: :cpu, raw: true, out: "./out/stackprof-cpu-myapp.dump") do
-PetriDish::World.run
+# PetriDish::World.run
 #   end
 # rescue SystemExit, Interrupt
 #   puts "Program exited early"
 # end
+
+# result = RubyProf::Profile.profile do
+#   PetriDish::World.run
+# rescue SystemExit, Interrupt
+#   :noop
+# end
+# RubyProf::GraphHtmlPrinter.new(result).print($stdout, min_percent: 0)
+
+$stdout.sync = true
+PetriDish::World.run

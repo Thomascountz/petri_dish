@@ -21,14 +21,14 @@ module PetriDish
 
     def self.run(population: Population.seed)
       puts metadata.start_time = Time.now if metadata.generation_count.zero?
-      puts "\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
+      puts "\t\t\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
       exit if metadata.generation_count >= configuration.max_generations
 
       # Calculate the fitness of each member of the population
       population = configuration.precalculate_fitness_function.call(population) if configuration.precalculate_fitness_function
 
       # Determine the size of the elite group
-      elite_size = (configuration.population_size * 0.1).to_i
+      elite_size = (configuration.population_size * 0.2).to_i
 
       # Sort the current population by fitness
       sorted_population = population.members.sort_by(&:fitness)
