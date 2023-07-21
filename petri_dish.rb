@@ -21,16 +21,11 @@ module PetriDish
       puts metadata.start_time = Time.now if metadata.generation_count.zero?
       exit if metadata.generation_count >= configuration.max_generations
       puts "\t\t\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
-    
-      # Determine the size of the elite group
-      elite_size = (configuration.population_size * 0.1).to_i
-    
-      # Sort the current population by fitness
-      sorted_population = population.members.sort_by(&:fitness)
-    
-      # Select the top individuals
-      elites = sorted_population.last(elite_size)
-    
+
+      # Keep the top ~10% of the population
+      elite_size = (configuration.population_size * 0.0).to_i
+      elites = population.members.sort_by(&:fitness).last(elite_size)
+
       # Generate the rest of the next generation
       next_generation = (configuration.population_size - elite_size).times.map do
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
@@ -43,10 +38,10 @@ module PetriDish
           exit if configuration.end_condition_function.call(mutated_child)
         end
       end
-    
+
       # Include the elites in the next generation
       next_generation.concat(elites)
-    
+
       new_population = Population.new(members: next_generation)
       metadata.increment_generation
       run(population: new_population)

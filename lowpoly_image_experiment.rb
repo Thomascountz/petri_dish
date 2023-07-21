@@ -13,6 +13,7 @@ Triangle = Data.define(
   :y2,
   :x3,
   :y3,
+  :z_index,
   :grayscale
 ) do
   def vertices
@@ -24,15 +25,16 @@ Triangle = Data.define(
   end
 end
 
-NUMBER_OF_GENERATIONS = 5000
+NUMBER_OF_GENERATIONS = 1000
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
+IMAGE_MAX_Z_INDEX = 100
 GREYSCALE_VALUES = (0..255).to_a
 POPULATION_SIZE = 500
 MIN_MEMBER_SIZE = 50
-MAX_MEMBER_SIZE = 500
-MIN_RADIUS = 5
-MAX_RADIUS = 10
+MAX_MEMBER_SIZE = 750
+MIN_RADIUS = 2
+MAX_RADIUS = 15
 
 def random_triangle
   # Choose a random point within the image
@@ -60,6 +62,7 @@ def random_triangle
     x1: points[0][0], y1: points[0][1],
     x2: points[1][0], y2: points[1][1],
     x3: points[2][0], y3: points[2][1],
+    z_index: rand(IMAGE_MAX_Z_INDEX),
     grayscale: GREYSCALE_VALUES.sample
   )
 end
@@ -68,7 +71,7 @@ def random_member
   Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
 end
 
-def import_image(path, output_path = "input_convert.png")
+def import_image(path, output_path = "target_image.png")
   image = Magick::Image.read(path).first
 
   crop_size = [image.columns, image.rows].min
@@ -87,20 +90,21 @@ end
 # import_image("astronaut.jpg")
 # population = seed_population
 # target_image = File.exist?("input_convert_500.png") ? Magick::Image.read("input_convert_500.png").first : import_image("astronaut.jpg", "input_convert_500.png")
-target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
+# target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
+target_image = File.exist?("input_convert_#{IMAGE_HEIGHT_PX}.png") ? Magick::Image.read("input_convert_#{IMAGE_HEIGHT_PX}.png").first : import_image("astronaut.jpg", "input_convert_#{IMAGE_HEIGHT_PX}.png")
 
 # Configuration for the genetic algorithm
 PetriDish::World.configure do |config|
   config.population_size = POPULATION_SIZE
-  config.mutation_rate = 0.05
+  config.mutation_rate = 0.01
   config.max_generations = NUMBER_OF_GENERATIONS
   config.target_genes = target_image
   config.gene_instantiation_function = -> { random_member }
-  config.fitness_function = ->(member) { calculate_fitness(member, config.target_genes) }
+  config.fitness_function = ->(member) { calculate_fitness_difference(member, config.target_genes) }
   config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out/gen-#{metadata.generation_count}.png") }
+  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out4/gen-#{metadata.generation_count}.png") }
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
   config.debug = true
 end
@@ -108,7 +112,7 @@ end
 def member_to_image(member, width, height)
   image = Magick::Image.new(width, height) { |options| options.background_color = "black" }
   draw = Magick::Draw.new
-  member.genes.each do |triangle|
+  member.genes.sort_by(&:z_index).each do |triangle|
     draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
     draw.polygon(*triangle.vertices.flatten)
   end
@@ -130,6 +134,13 @@ def calculate_fitness(member, target_image)
 
   # Use the mean error per pixel as the fitness
   1.0 / (difference + 0.0001) # The small constant in the denominator is to avoid division by zero
+end
+
+def calculate_fitness_difference(member, target_image)
+  # Your code to generate an image from the member's genes (triangles)
+  individual_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
+  # (1.0 - target_image.difference(individual_image)[2])**2
+  1.0 / target_image.difference(individual_image)[1]
 end
 
 def random_midpoint_crossover_function(parent_1, parent_2)
