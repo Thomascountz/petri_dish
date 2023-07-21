@@ -32,7 +32,7 @@ IMAGE_MAX_Z_INDEX = 100
 GREYSCALE_VALUES = (0..255).to_a
 POPULATION_SIZE = 500
 MIN_MEMBER_SIZE = 50
-MAX_MEMBER_SIZE = 750
+MAX_MEMBER_SIZE = 500
 MIN_RADIUS = 2
 MAX_RADIUS = 15
 
@@ -50,12 +50,9 @@ def random_triangle
   # using the formulas `x = center_x + radius * Math.cos(angle)` and `y =
   # center_y + radius * Math.sin(angle)`. These are basically the conversion
   # formulas from polar to Cartesian coordinates.
-  angles = 3.times.map { rand * 2 * Math::PI }
-
-  points = angles.map do |angle|
-    x = center_x + radius * Math.cos(angle)
-    y = center_y + radius * Math.sin(angle)
-    [x, y]
+  points = Array.new(3) do
+    angle = rand * 2 * Math::PI
+    [(center_x + radius * Math.cos(angle)), (center_y + radius * Math.sin(angle))]
   end
 
   Triangle.new(
@@ -87,10 +84,6 @@ def import_image(path, output_path = "target_image.png")
   image
 end
 
-# import_image("astronaut.jpg")
-# population = seed_population
-# target_image = File.exist?("input_convert_500.png") ? Magick::Image.read("input_convert_500.png").first : import_image("astronaut.jpg", "input_convert_500.png")
-# target_image = File.exist?("input_convert_100.png") ? Magick::Image.read("input_convert_100.png").first : import_image("astronaut.jpg", "input_convert_100.png")
 target_image = File.exist?("input_convert_#{IMAGE_HEIGHT_PX}.png") ? Magick::Image.read("input_convert_#{IMAGE_HEIGHT_PX}.png").first : import_image("astronaut.jpg", "input_convert_#{IMAGE_HEIGHT_PX}.png")
 
 # Configuration for the genetic algorithm
@@ -105,6 +98,7 @@ PetriDish::World.configure do |config|
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
   config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out4/gen-#{metadata.generation_count}.png") }
+  # config.next_generation_callback = ->(population, metadata) { puts "Generation #{metadata.generation_count} fittest member: #{population.fittest_member}" },
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
   config.debug = true
 end
@@ -126,11 +120,10 @@ def save_image(image, path)
 end
 
 def calculate_fitness(member, target_image)
-  # Your code to generate an image from the member's genes (triangles)
   individual_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
 
-  # Compare the individual image to the target image
-  _difference_image, difference = target_image.compare_channel(individual_image, Magick::MeanSquaredErrorMetric)
+  # `Image#compare_channel` compares a particular channel (color component)
+  _difference_image, difference = target_image.compare_channel(individual_image, Magick::MeanSquaredErrorMetric, Magick::LuminosityChannel)
 
   # Use the mean error per pixel as the fitness
   1.0 / (difference + 0.0001) # The small constant in the denominator is to avoid division by zero
@@ -139,8 +132,9 @@ end
 def calculate_fitness_difference(member, target_image)
   # Your code to generate an image from the member's genes (triangles)
   individual_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
+  # Difference is a tuple of [mean_error_per_pixel, normalized_mean_error, normalized_maximum_error]
   # (1.0 - target_image.difference(individual_image)[2])**2
-  1.0 / target_image.difference(individual_image)[1]
+  1.0 / target_image.difference(individual_image)[1]**2
 end
 
 def random_midpoint_crossover_function(parent_1, parent_2)
