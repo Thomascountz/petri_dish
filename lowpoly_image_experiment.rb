@@ -4,7 +4,11 @@ require_relative "./petri_dish"
 gemfile do
   source "https://rubygems.org"
   gem "rmagick", require: "rmagick"
+  gem "delaunator", require: true
+  gem "pry"
 end
+
+Point = Struct.new(:x, :y, :grayscale)
 
 Triangle = Data.define(
   :x1,
@@ -26,15 +30,26 @@ Triangle = Data.define(
 end
 
 NUMBER_OF_GENERATIONS = 1000
-IMAGE_HEIGHT_PX = 100
-IMAGE_WIDTH_PX = 100
+IMAGE_HEIGHT_PX = 250
+IMAGE_WIDTH_PX = 250
 IMAGE_MAX_Z_INDEX = 100
 GREYSCALE_VALUES = (0..255).to_a
-POPULATION_SIZE = 500
-MIN_MEMBER_SIZE = 50
-MAX_MEMBER_SIZE = 500
+POPULATION_SIZE = 100
+MIN_MEMBER_SIZE = 100
+MAX_MEMBER_SIZE = 250
 MIN_RADIUS = 2
 MAX_RADIUS = 15
+
+# Introduce some randomness to the points due to the implementation of the
+# algorithm leading to a divide by zero error when points are collinear
+def point_jitter
+  jitter = 0.0001
+  rand(-jitter..jitter)
+end
+
+def random_point
+  Point.new(rand(IMAGE_WIDTH_PX) + point_jitter, rand(IMAGE_HEIGHT_PX) + point_jitter, GREYSCALE_VALUES.sample)
+end
 
 def random_triangle
   # Choose a random point within the image
@@ -64,8 +79,12 @@ def random_triangle
   )
 end
 
+# def random_member
+#   Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
+# end
+
 def random_member
-  Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_triangle }
+  Array.new(rand(MIN_MEMBER_SIZE..MAX_MEMBER_SIZE)) { random_point }
 end
 
 def import_image(path, output_path = "target_image.png")
@@ -97,18 +116,45 @@ PetriDish::World.configure do |config|
   config.parent_selection_function = PetriDish::Configuration.roulette_wheel_parent_selection_function
   config.crossover_function = ->(parent_1, parent_2) { random_midpoint_crossover_function(parent_1, parent_2) }
   config.mutation_function = ->(member) { random_mutation_function(member, config.mutation_rate) }
-  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out4/gen-#{metadata.generation_count}.png") }
+  config.fittest_member_callback = ->(member, metadata) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX), "./out7/gen-#{metadata.generation_count}.png") }
   # config.next_generation_callback = ->(population, metadata) { puts "Generation #{metadata.generation_count} fittest member: #{population.fittest_member}" },
   config.end_condition_function = ->(_member) { false } # Define your own end condition function
   config.debug = true
 end
 
+# def member_to_image(member, width, height)
+#   image = Magick::Image.new(width, height) { |options| options.background_color = "black" }
+#   draw = Magick::Draw.new
+#   member.genes.sort_by(&:z_index).each do |triangle|
+#     draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
+#     draw.polygon(*triangle.vertices.flatten)
+#   end
+#   draw.draw(image)
+#   image
+# end
+
 def member_to_image(member, width, height)
   image = Magick::Image.new(width, height) { |options| options.background_color = "black" }
   draw = Magick::Draw.new
-  member.genes.sort_by(&:z_index).each do |triangle|
-    draw.fill("rgb(#{triangle.grayscale}, #{triangle.grayscale}, #{triangle.grayscale})")
-    draw.polygon(*triangle.vertices.flatten)
+
+  # Get the points from the member
+  points = member.genes.map { |point| [point.x, point.y] }
+
+  # Perform Delaunay triangulation on the points
+  triangles = Delaunator.triangulate(points)
+
+  # Draw each triangle
+  triangles.each_slice(3) do |i, j, k|
+    # Get the vertices of the triangle
+    vertices = [points[i], points[j], points[k]]
+
+    # Get the color of the triangle
+    # Here we take the color from the first point of the triangle.
+    # You might want to adjust this depending on your specific setup.
+    color = member.genes[i].grayscale
+    draw.fill("rgb(#{color}, #{color}, #{color})")
+
+    draw.polygon(*vertices.flatten)
   end
 
   draw.draw(image)
@@ -146,18 +192,19 @@ def replace_mutation_function(member, mutation_rate)
   mutated_genes = member.genes.dup
   if PetriDish::World.configuration.mutation_rate > rand
     gene_index = rand(mutated_genes.size)
-    mutated_genes[gene_index] = random_triangle
+    mutated_genes[gene_index] = random_trandom_
   end
   PetriDish::Member.new(genes: mutated_genes)
 end
 
 def random_mutation_function(member, mutation_rate)
   mutated_genes = member.genes.dup.map do |gene|
-    (rand < mutation_rate) ? random_triangle : gene
+    (rand < mutation_rate) ? random_point : gene
   end
   PetriDish::Member.new(genes: mutated_genes)
 end
 
 # Start the genetic algorithm
 $stdout.sync = true
+puts "generation,fitness" if PetriDish::World::configuration.debug
 PetriDish::World.run

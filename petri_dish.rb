@@ -18,22 +18,22 @@ module PetriDish
     end
 
     def self.run(population: Population.seed)
-      puts metadata.start_time = Time.now if metadata.generation_count.zero?
+      metadata.start_time = Time.now if metadata.generation_count.zero?
       exit if metadata.generation_count >= configuration.max_generations
-      puts "\t\t\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
+      # puts "\t\t\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
 
       # Keep the top ~10% of the population
-      elite_size = (configuration.population_size * 0.0).to_i
+      elite_size = (configuration.population_size * 0.1).to_i
       elites = population.members.sort_by(&:fitness).last(elite_size)
 
       # Generate the rest of the next generation
       next_generation = (configuration.population_size - elite_size).times.map do
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
         configuration.mutation_function.call(child_member).tap do |mutated_child|
-          if metadata.higest_fitness < mutated_child.fitness
+          if metadata.highest_fitness < mutated_child.fitness
             configuration.fittest_member_callback.call(mutated_child, metadata)
-            metadata.higest_fitness = mutated_child.fitness
-            puts "FIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
+            metadata.highest_fitness = mutated_child.fitness
+            # puts "FIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}\tRUNTIME: #{sprintf("%.2f", Time.now - metadata.start_time)}s" if configuration.debug
           end
           exit if configuration.end_condition_function.call(mutated_child)
         end
@@ -44,6 +44,7 @@ module PetriDish
 
       new_population = Population.new(members: next_generation)
       metadata.increment_generation
+      puts "#{metadata.generation_count},#{metadata.highest_fitness}" if configuration.debug
       run(population: new_population)
     end
   end
@@ -82,11 +83,11 @@ module PetriDish
 
   class Metadata
     attr_reader :generation_count
-    attr_accessor :higest_fitness, :start_time
+    attr_accessor :highest_fitness, :start_time
 
     def initialize
       @generation_count = 0
-      @higest_fitness = 0
+      @highest_fitness = 0
       @start_time = nil
     end
 
