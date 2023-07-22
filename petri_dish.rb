@@ -22,8 +22,8 @@ module Petridish
       next_generation = configuration.population_size.times.map do
         child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
         configuration.mutation_function.call(child_member).tap do |mutated_child|
-          if metadata.higest_fitness < mutated_child.fitness
-            metadata.higest_fitness = mutated_child.fitness
+          if metadata.highest_fitness < mutated_child.fitness
+            metadata.highest_fitness = mutated_child.fitness
             puts "#{mutated_child}\tFIT: #{mutated_child.fitness}\tGEN: #{metadata.generation_count.to_s.rjust(4, "0")}"
           end
           exit if configuration.end_condition_function.call(mutated_child)
@@ -69,11 +69,11 @@ module Petridish
 
   class Metadata
     attr_reader :generation_count
-    attr_accessor :higest_fitness
+    attr_accessor :highest_fitness
 
     def initialize
       @generation_count = 0
-      @higest_fitness = 0
+      @highest_fitness = 0
     end
 
     def increment_generation
