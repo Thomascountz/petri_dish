@@ -115,4 +115,4 @@ PetriDish::World.configure do |config|
   config.end_condition_function = ->(_member) { false }
 end
 
-PetriDish::World.run
+PetriDish::World.new.run

@@ -28,4 +28,4 @@ PetriDish::World.configure do |config|
   config.highest_fitness_callback = ->(member) { puts "Highest fitness: #{member.fitness} (#{member})" }
 end
 
-PetriDish::World.run
+PetriDish::World.new.run
