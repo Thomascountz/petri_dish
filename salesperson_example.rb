@@ -1,4 +1,4 @@
-require_relative "./petridish"
+require_relative "./petri_dish"
 
 XLIMIT = 10
 YLIMIT = XLIMIT
@@ -61,6 +61,14 @@ def random_ordered_crossover_function
   end
 end
 
+def write_best_member_to_file
+  ->(member) do
+    File.open("best_member.txt", "a") do |file|
+      file.puts member.genes.join
+    end
+  end
+end
+
 class Gene
   attr_reader :x, :y
   def initialize(x: nil, y: nil)
@@ -101,6 +109,7 @@ Petridish::World.configure do |config|
   config.fitness_function = fitness_function
   config.parent_selection_function = Petridish::Configuration.twenty_percent_tournament_parent_selection_function
   config.crossover_function = random_ordered_crossover_function
+  config.highest_fitness_callback = write_best_member_to_file
   # Rely on number of generations for end condition
   config.end_condition_function = ->(_member) { false }
 end

@@ -1,4 +1,4 @@
-require_relative "./petridish"
+require_relative "./petri_dish"
 
 Petridish::World.configure do |config|
   config.max_generations = 5000
@@ -13,4 +13,3 @@ Petridish::World.configure do |config|
 end
 
 Petridish::World.run
-
