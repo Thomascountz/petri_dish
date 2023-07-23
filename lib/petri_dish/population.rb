@@ -10,7 +10,7 @@ module PetriDish
       @members = members || []
     end
 
-    def select_parent
+    def select_parents
       World.configuration.parent_selection_function.call(self)
     end
   end

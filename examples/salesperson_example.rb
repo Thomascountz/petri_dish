@@ -51,11 +51,11 @@ end
 # without duplicating any genes in the selected subset from the
 # first parent
 def random_ordered_crossover_function
-  ->(parent1, parent2) do
-    start_slice_index, end_slice_index = rand(parent1.genes.size), rand(parent1.genes.size)
-    parent1_slice = parent1.genes[start_slice_index...end_slice_index]
-    parent2_contribution = parent2.genes - parent1_slice
-    child_genes = Array.new(parent1.genes.size)
+  ->(parents) do
+    start_slice_index, end_slice_index = rand(parents[0].genes.size), rand(parents[0].genes.size)
+    parent1_slice = parents[0].genes[start_slice_index...end_slice_index]
+    parent2_contribution = parents[1].genes - parent1_slice
+    child_genes = Array.new(parents[0].genes.size)
     child_genes[start_slice_index...end_slice_index] = parent1_slice
     child_genes.map! { |gene| gene.nil? ? parent2_contribution.shift : gene }
     PetriDish::Member.new(genes: child_genes)

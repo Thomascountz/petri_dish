@@ -32,7 +32,7 @@ module PetriDish
         configuration.logger.info(metadata.to_json)
         configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
         next_generation = configuration.population_size.times.map do
-          child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
+          child_member = configuration.crossover_function.call(population.select_parents)
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
               metadata.highest_fitness = mutated_child.fitness

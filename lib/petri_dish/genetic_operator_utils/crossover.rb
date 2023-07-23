@@ -4,9 +4,9 @@ module PetriDish
   module GeneticOperatorUtils
     class Crossover
       def self.random_midpoint
-        ->(parent1, parent2) do
-          midpoint = rand(parent1.genes.length)
-          PetriDish::Member.new(genes: parent1.genes[0...midpoint] + parent2.genes[midpoint..])
+        ->(parents) do
+          midpoint = rand(parents[0].genes.length)
+          PetriDish::Member.new(genes: parents[0].genes[0...midpoint] + parents[1].genes[midpoint..])
         end
       end
     end
