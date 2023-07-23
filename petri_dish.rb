@@ -25,7 +25,7 @@ module Petridish
       def run(population: Population.seed)
         startup if metadata.generation_count.zero?
         configuration.logger.info(metadata.to_json)
-        exit if metadata.generation_count >= configuration.max_generations
+        configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
         next_generation = configuration.population_size.times.map do
           child_member = configuration.crossover_function.call(population.select_parent, population.select_parent)
           configuration.mutation_function.call(child_member).tap do |mutated_child|
@@ -34,7 +34,7 @@ module Petridish
               configuration.logger.info(metadata.to_json)
               configuration.highest_fitness_callback.call(mutated_child)
             end
-            exit if configuration.end_condition_function.call(mutated_child)
+            configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
           end
         end
         new_population = Population.new(members: next_generation)
@@ -121,7 +121,9 @@ module Petridish
       :mutation_function,
       :fitness_function,
       :highest_fitness_callback,
-      :end_condition_function
+      :max_generation_reached_callback,
+      :end_condition_function,
+      :end_condition_reached_callback
 
     # Default to lazy dog example
     def initialize
@@ -137,7 +139,9 @@ module Petridish
       @crossover_function = Configuration.random_midpoint_crossover_function
       @mutation_function = Configuration.random_mutation_function
       @highest_fitness_callback = Configuration.highest_fitness_member_stdout_callback
+      @max_generation_reached_callback = -> { exit }
       @end_condition_function = Configuration.genes_match_target_end_condition_function
+      @end_condition_reached_callback = ->(_member) { exit }
     end
 
     class << self
