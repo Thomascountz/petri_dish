@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to Petri Dish! This project is a Ruby-based library designed to provide functionality for genetic algorithms. Petridish uses concepts from genetics and natural selection to solve optimization problems. This library is designed to be flexible and configurable, allowing you to create and customize your own genetic algorithms.
+Welcome to Petri Dish! This project is a Ruby-based library designed to provide functionality for genetic algorithms. PetriDish uses concepts from genetics and natural selection to solve optimization problems. This library is designed to be flexible and configurable, allowing you to create and customize your own genetic algorithms.
 
 ## Overview of Genetic Algorithms
 
@@ -19,7 +19,7 @@ The fundamental steps in a genetic algorithm include:
 
 ## Key Concepts of This Library
 
-Petridish consists of several key classes that encapsulate the various components of a genetic algorithm:
+PetriDish consists of several key classes that encapsulate the various components of a genetic algorithm:
 
 - **World**: This is the main engine that drives the genetic algorithm, including maintaining the current population, running the generations, and checking for termination conditions.
 - **Population**: A collection of individuals or _members_ that make up a generation.
@@ -48,7 +48,7 @@ Here's an example of how to customize these settings:
 ```ruby
 require_relative "./petridish"
 
-Petridish::World.configure do |config|
+PetriDish::World.configure do |config|
   config.max_generations = 1000
   config.population_size = 100
   config.mutation_rate = 0.01
@@ -56,13 +56,13 @@ Petridish::World.configure do |config|
   config.target_genes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
   config.gene_instantiation_function = -> { config.target_genes.shuffle }
   config.fitness_function = ->(member) { (member.genes.sum - config.target_genes.sum).abs }
-  config.parent_selection_function = Petridish::Configuration.elitist_fitness_parent_selection_function
-  config.crossover_function = Petridish::Configuration.random_midpoint_crossover_function
-  config.mutation_function = Petridish::Configuration.random_mutation_function
+  config.parent_selection_function = PetriDish::Configuration.elitist_fitness_parent_selection_function
+  config.crossover_function = PetriDish::Configuration.random_midpoint_crossover_function
+  config.mutation_function = PetriDish::Configuration.random_mutation_function
   config.end_condition_function = ->(member) { member.genes == config.target_genes }
 end
 
-Petridish::World.run
+PetriDish::World.run
 ```
 
 This configuration sets up a genetic algorithm that aims to evolve a member whose genes are a shuffled version of the target genes. The algorithm will run for a maximum of 1000 generations, with each generation consisting of 100 members. The mutation rate is set to 1%, meaning each gene has a 1% chance of being randomly changed during mutation. The fitness function is defined as the absolute difference between the sum of a member's genes and the sum of the target genes. The algorithm will select the fittest member for reproduction (elitist selection), use a random point for crossover, and terminate the algorithm when a member's genes match the target genes.

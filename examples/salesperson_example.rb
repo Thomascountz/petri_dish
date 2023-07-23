@@ -1,4 +1,4 @@
-require_relative "./petri_dish"
+require_relative "../lib/petri_dish"
 
 XLIMIT = 10
 YLIMIT = XLIMIT
@@ -9,8 +9,8 @@ def random_uniq_city_gene_generation
     result = []
     until result.size == NUM_OF_CITIES
       result << Gene.new(
-        x: Petridish::World.configuration.genetic_material.sample,
-        y: Petridish::World.configuration.genetic_material.sample
+        x: PetriDish::World.configuration.genetic_material.sample,
+        y: PetriDish::World.configuration.genetic_material.sample
       )
       result.uniq!
     end
@@ -19,7 +19,7 @@ def random_uniq_city_gene_generation
 end
 
 def random_gene_instantiation_function
-  -> { Petridish::World.configuration.target_genes.shuffle }
+  -> { PetriDish::World.configuration.target_genes.shuffle }
 end
 
 def fitness_function
@@ -35,12 +35,12 @@ end
 def swap_mutation_function
   ->(member) do
     mutated_genes = member.genes.dup
-    if Petridish::World.configuration.mutation_rate > rand
+    if PetriDish::World.configuration.mutation_rate > rand
       gene_one_index = rand(mutated_genes.size)
       gene_two_index = rand(mutated_genes.size)
       mutated_genes[gene_one_index], mutated_genes[gene_two_index] = mutated_genes[gene_two_index], mutated_genes[gene_one_index]
     end
-    Petridish::Member.new(genes: mutated_genes)
+    PetriDish::Member.new(genes: mutated_genes)
   end
 end
 
@@ -57,7 +57,7 @@ def random_ordered_crossover_function
     child_genes = Array.new(parent1.genes.size)
     child_genes[start_slice_index...end_slice_index] = parent1_slice
     child_genes.map! { |gene| gene.nil? ? parent2_contribution.shift : gene }
-    Petridish::Member.new(genes: child_genes)
+    PetriDish::Member.new(genes: child_genes)
   end
 end
 
@@ -98,7 +98,7 @@ class Gene
   end
 end
 
-Petridish::World.configure do |config|
+PetriDish::World.configure do |config|
   config.max_generations = 1000
   config.population_size = 100
   config.mutation_rate = 0.01
@@ -107,11 +107,11 @@ Petridish::World.configure do |config|
   config.gene_instantiation_function = random_gene_instantiation_function
   config.mutation_function = swap_mutation_function
   config.fitness_function = fitness_function
-  config.parent_selection_function = Petridish::Configuration.twenty_percent_tournament_parent_selection_function
+  config.parent_selection_function = PetriDish::Configuration.twenty_percent_tournament_parent_selection_function
   config.crossover_function = random_ordered_crossover_function
   config.highest_fitness_callback = write_best_member_to_file
   # Rely on number of generations for end condition
   config.end_condition_function = ->(_member) { false }
 end
 
-Petridish::World.run
+PetriDish::World.run

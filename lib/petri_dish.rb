@@ -3,11 +3,11 @@ RubyVM::InstructionSequence.compile_option = {
   trace_instruction: false
 }
 
+require "json"
 require "logger"
 require "securerandom"
-require "json"
 
-module Petridish
+module PetriDish
   class World
     class << self
       def configuration
