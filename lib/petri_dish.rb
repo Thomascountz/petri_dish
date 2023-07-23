@@ -31,7 +31,7 @@ module PetriDish
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
               metadata.highest_fitness = mutated_child.fitness
-              configuration.logger.info(metadata.to_json)
+              configuration.logger.info(metadata.to_h.merge({updated_highest_fitness: true}).to_json)
               configuration.highest_fitness_callback.call(mutated_child)
             end
             configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
@@ -98,13 +98,17 @@ module PetriDish
       @generation_count += 1
     end
 
-    def to_json
+    def to_h
       {
         id: id,
         generation_count: generation_count,
         highest_fitness: highest_fitness,
         elapsed_time: (Time.now - start_time).round(2)
-      }.to_json
+      }
+    end
+
+    def to_json
+      to_h.to_json
     end
   end
 
