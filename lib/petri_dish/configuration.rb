@@ -8,6 +8,7 @@ module PetriDish
       :population_size,
       :mutation_rate,
       :genetic_material,
+      :elitism_rate,
       :target_genes,
       :max_generations,
       :gene_instantiation_function,
@@ -31,6 +32,7 @@ module PetriDish
       @max_generations = default_max_generations
       @population_size = default_population_size
       @mutation_rate = default_mutation_rate
+      @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
       @target_genes = default_target_genes
       @gene_instantiation_function = default_gene_instantiation_function
@@ -50,6 +52,7 @@ module PetriDish
       raise ArgumentError, "max_generations must be greater than 0" unless max_generations > 0
       raise ArgumentError, "population_size must be greater than 0" unless population_size > 0
       raise ArgumentError, "mutation_rate must be between 0 and 1" unless mutation_rate > 0 && mutation_rate < 1
+      raise ArgumentError, "elitism_rate must be between 0 and 1" unless elitism_rate > 0 && elitism_rate < 1
       raise ArgumentError, "genetic_material must be an Array" unless genetic_material.is_a?(Array)
       raise ArgumentError, "target_genes must be an Array" unless target_genes.is_a?(Array)
       raise ArgumentError, "gene_instantiation_function must respond to :call" unless gene_instantiation_function.respond_to?(:call)
@@ -69,6 +72,7 @@ module PetriDish
       @max_generations = default_max_generations
       @population_size = default_population_size
       @mutation_rate = default_mutation_rate
+      @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
       @target_genes = default_target_genes
       @gene_instantiation_function = default_gene_instantiation_function
@@ -90,6 +94,8 @@ module PetriDish
     def default_population_size = 100
 
     def default_mutation_rate = 0.005
+
+    def default_elitism_rate = 0.00
 
     def default_genetic_material = []
 

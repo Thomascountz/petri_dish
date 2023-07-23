@@ -37,7 +37,9 @@ module PetriDish
       startup if metadata.generation_count.zero?
       configuration.logger.info(metadata.to_json)
       configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
-      next_generation = configuration.population_size.times.map do
+      elitism_count = (configuration.population_size * configuration.elitism_rate).round
+      elite_members = population.members.sort_by(&:fitness).last(elitism_count)
+      new_members = (configuration.population_size - elitism_count).times.map do
         child_member = configuration.crossover_function.call(population.select_parents)
         configuration.mutation_function.call(child_member).tap do |mutated_child|
           if metadata.highest_fitness < mutated_child.fitness
@@ -48,7 +50,7 @@ module PetriDish
           configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
         end
       end
-      new_population = PetriDish::Population.new(members: next_generation)
+      new_population = PetriDish::Population.new(members: new_members + elite_members)
       metadata.increment_generation
       run(population: new_population)
     end
