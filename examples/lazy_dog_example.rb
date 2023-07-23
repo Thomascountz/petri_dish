@@ -1,15 +1,31 @@
 require_relative "../lib/petri_dish"
+require_relative "../lib/petri_dish/genetic_operator_utils/fitness"
+require_relative "../lib/petri_dish/genetic_operator_utils/selection"
+require_relative "../lib/petri_dish/genetic_operator_utils/crossover"
+require_relative "../lib/petri_dish/genetic_operator_utils/mutation"
+
+target_genes = "the quick brown fox jumped over the lazy white dog".chars
+genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
+
+def genes_match_target_end_condition_function
+  ->(member) do
+    member.genes == PetriDish::World.configuration.target_genes
+  end
+end
 
 PetriDish::World.configure do |config|
   config.max_generations = 5000
   config.population_size = 250
   config.mutation_rate = 0.005
-  config.genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
-  config.target_genes = "the quick brown fox jumped over the lazy white dog".chars
-  config.gene_instantiation_function = PetriDish::Configuration.random_gene_instantiation_function
-  config.parent_selection_function = PetriDish::Configuration.twenty_percent_tournament_parent_selection_function
-  config.fitness_function = PetriDish::Configuration.exponential_fitness_function
-  config.crossover_function = PetriDish::Configuration.random_midpoint_crossover_function
+  config.genetic_material = genetic_material
+  config.target_genes = target_genes
+  config.gene_instantiation_function = -> { Array.new(target_genes.size) { genetic_material.sample } }
+  config.parent_selection_function = PetriDish::GeneticOperatorUtils::Selection.twenty_percent_tournament
+  config.fitness_function = PetriDish::GeneticOperatorUtils::Fitness.exponential
+  config.crossover_function = PetriDish::GeneticOperatorUtils::Crossover.random_midpoint
+  config.mutation_function = PetriDish::GeneticOperatorUtils::Mutation.random
+  config.end_condition_function = genes_match_target_end_condition_function
+  config.highest_fitness_callback = ->(member) { puts "Highest fitness: #{member.fitness} (#{member})" }
 end
 
 PetriDish::World.run

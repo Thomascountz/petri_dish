@@ -1,4 +1,5 @@
 require_relative "../lib/petri_dish"
+require_relative "../lib/petri_dish/genetic_operator_utils/selection"
 
 XLIMIT = 10
 YLIMIT = XLIMIT
@@ -107,7 +108,7 @@ PetriDish::World.configure do |config|
   config.gene_instantiation_function = random_gene_instantiation_function
   config.mutation_function = swap_mutation_function
   config.fitness_function = fitness_function
-  config.parent_selection_function = PetriDish::Configuration.twenty_percent_tournament_parent_selection_function
+  config.parent_selection_function = PetriDish::GeneticOperatorUtils::Selection.twenty_percent_tournament
   config.crossover_function = random_ordered_crossover_function
   config.highest_fitness_callback = write_best_member_to_file
   # Rely on number of generations for end condition
