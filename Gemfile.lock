@@ -1,0 +1,36 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.5.0)
+    language_server-protocol (3.17.0.3)
+    prettier_print (1.2.1)
+    rspec (3.12.0)
+      rspec-core (~> 3.12.0)
+      rspec-expectations (~> 3.12.0)
+      rspec-mocks (~> 3.12.0)
+    rspec-core (3.12.2)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.6)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.12.0)
+    rspec-support (3.12.1)
+    ruby-lsp (0.7.3)
+      language_server-protocol (~> 3.17.0)
+      sorbet-runtime
+      syntax_tree (>= 6.1.1, < 7)
+    sorbet-runtime (0.5.10929)
+    syntax_tree (6.1.1)
+      prettier_print (>= 1.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rspec
+  ruby-lsp
+
+BUNDLED WITH
+   2.4.17

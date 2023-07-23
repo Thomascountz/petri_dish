@@ -16,7 +16,7 @@ PetriDish::World.configure do |config|
   config.genetic_material = genetic_material
   config.target_genes = target_genes
   config.gene_instantiation_function = -> { Array.new(target_genes.size) { genetic_material.sample } }
-  config.parent_selection_function = PetriDish::GeneticOperatorUtils::Selection.twenty_percent_tournament
+  config.parents_selection_function = PetriDish::GeneticOperatorUtils::Selection.twenty_percent_tournament
   config.fitness_function = PetriDish::GeneticOperatorUtils::Fitness.exponential
   config.crossover_function = PetriDish::GeneticOperatorUtils::Crossover.random_midpoint
   config.mutation_function = PetriDish::GeneticOperatorUtils::Mutation.random

@@ -18,6 +18,7 @@ module PetriDish
 
       def configure
         yield(configuration)
+        configuration
       end
 
       def metadata
@@ -34,7 +35,10 @@ module PetriDish
     end
 
     def run(population: PetriDish::Population.seed)
-      startup if metadata.generation_count.zero?
+      if metadata.generation_count.zero?
+        configuration.logger.info "Run started."
+        metadata.start_time = Time.now
+      end
       configuration.logger.info(metadata.to_json)
       configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
       elitism_count = (configuration.population_size * configuration.elitism_rate).round
@@ -53,13 +57,6 @@ module PetriDish
       new_population = PetriDish::Population.new(members: new_members + elite_members)
       metadata.increment_generation
       run(population: new_population)
-    end
-
-    private
-
-    def startup
-      configuration.logger.info "Run started."
-      metadata.start_time = Time.now
     end
   end
 end

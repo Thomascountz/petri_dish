@@ -12,7 +12,7 @@ module PetriDish
       :target_genes,
       :max_generations,
       :gene_instantiation_function,
-      :parent_selection_function,
+      :parents_selection_function,
       :crossover_function,
       :mutation_function,
       :fitness_function,
@@ -37,7 +37,7 @@ module PetriDish
       @target_genes = default_target_genes
       @gene_instantiation_function = default_gene_instantiation_function
       @fitness_function = default_fitness_function
-      @parent_selection_function = default_parent_selection_function
+      @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
       @mutation_function = default_mutation_function
       @highest_fitness_callback = default_highest_fitness_callback
@@ -57,7 +57,7 @@ module PetriDish
       raise ArgumentError, "target_genes must be an Array" unless target_genes.is_a?(Array)
       raise ArgumentError, "gene_instantiation_function must respond to :call" unless gene_instantiation_function.respond_to?(:call)
       raise ArgumentError, "fitness_function must respond to :call" unless fitness_function.respond_to?(:call)
-      raise ArgumentError, "parent_selection_function must respond to :call" unless parent_selection_function.respond_to?(:call)
+      raise ArgumentError, "parents_selection_function must respond to :call" unless parents_selection_function.respond_to?(:call)
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
       raise ArgumentError, "mutation_function must respond to :call" unless mutation_function.respond_to?(:call)
       raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.respond_to?(:call)
@@ -77,7 +77,7 @@ module PetriDish
       @target_genes = default_target_genes
       @gene_instantiation_function = default_gene_instantiation_function
       @fitness_function = default_fitness_function
-      @parent_selection_function = default_parent_selection_function
+      @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
       @mutation_function = default_mutation_function
       @end_condition_function = default_end_condition_function
@@ -105,7 +105,7 @@ module PetriDish
 
     def default_fitness_function = -> { raise ArgumentError, "fitness_function must be set" }
 
-    def default_parent_selection_function = ->(_population) { raise ArgumentError, "parent_selection_function must be set" }
+    def default_parents_selection_function = ->(_population) { raise ArgumentError, "parents_selection_function must be set" }
 
     def default_crossover_function = ->(parents) { raise ArgumentError, "crossover_function must be set" }
 

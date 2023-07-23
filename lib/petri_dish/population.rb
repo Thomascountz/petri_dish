@@ -11,7 +11,7 @@ module PetriDish
     end
 
     def select_parents
-      World.configuration.parent_selection_function.call(self)
+      World.configuration.parents_selection_function.call(self)
     end
   end
 end

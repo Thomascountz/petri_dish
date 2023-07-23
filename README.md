@@ -38,7 +38,7 @@ You can modify various aspects of the genetic algorithm by changing the configur
 - **max_generations**: The maximum number of generations to run the algorithm for.
 - **gene_instantiation_function**: A function to generate a new set of genes for a member.
 - **fitness_function**: A function to evaluate the fitness of a member.
-- **parent_selection_function**: A function to select a parent for reproduction.
+- **parents_selection_function**: A function to select a parent for reproduction.
 - **crossover_function**: A function to combine the genes of two parents to produce offspring.
 - **mutation_function**: A function to introduce random changes in a member's genes.
 - **end_condition_function**: A function to determine when the algorithm should terminate.
@@ -56,7 +56,7 @@ PetriDish::World.configure do |config|
   config.target_genes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
   config.gene_instantiation_function = -> { config.target_genes.shuffle }
   config.fitness_function = ->(member) { (member.genes.sum - config.target_genes.sum).abs }
-  config.parent_selection_function = PetriDish::Configuration.elitist_fitness_parent_selection_function
+  config.parents_selection_function = PetriDish::Configuration.elitist_fitness_parents_selection_function
   config.crossover_function = PetriDish::Configuration.random_midpoint_crossover_function
   config.mutation_function = PetriDish::Configuration.random_mutation_function
   config.end_condition_function = ->(member) { member.genes == config.target_genes }
