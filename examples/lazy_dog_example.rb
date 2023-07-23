@@ -1,8 +1,4 @@
 require_relative "../lib/petri_dish"
-require_relative "../lib/petri_dish/genetic_operator_utils/fitness"
-require_relative "../lib/petri_dish/genetic_operator_utils/selection"
-require_relative "../lib/petri_dish/genetic_operator_utils/crossover"
-require_relative "../lib/petri_dish/genetic_operator_utils/mutation"
 
 target_genes = "the quick brown fox jumped over the lazy white dog".chars
 genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
