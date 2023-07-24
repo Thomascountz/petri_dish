@@ -1,17 +1,21 @@
 module PetriDish
   class Population
-    attr_reader :members
+    attr_reader :members, :configuration
 
-    def self.seed
-      new(members: World.configuration.population_size.times.map { Member.new })
+    def self.seed(configuration)
+      new(
+        configuration: configuration,
+        members: configuration.population_size.times.map { Member.new(configuration: configuration) }
+      )
     end
 
-    def initialize(members: nil)
+    def initialize(configuration:, members: nil)
+      @configuration = configuration
       @members = members || []
     end
 
     def select_parents
-      World.configuration.parents_selection_function.call(self)
+      configuration.parents_selection_function.call(self)
     end
   end
 end

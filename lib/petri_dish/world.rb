@@ -12,51 +12,37 @@ require_relative "../petri_dish"
 module PetriDish
   class World
     class << self
-      def configuration
-        PetriDish::Configuration.instance
-      end
+      attr_accessor :metadata
+      attr_reader :configuration
 
-      def configure
-        yield(configuration)
-        configuration
-      end
-
-      def metadata
-        @metadata ||= Metadata.new
-      end
-    end
-
-    attr_accessor :metadata
-    attr_reader :configuration
-
-    def initialize(configuration: PetriDish::Configuration.instance, metadata: PetriDish::Metadata.new)
-      @configuration = configuration
-      @metadata = metadata
-    end
-
-    def run(population: PetriDish::Population.seed)
-      if metadata.generation_count.zero?
-        configuration.logger.info "Run started."
-        metadata.start_time = Time.now
-      end
-      configuration.logger.info(metadata.to_json)
-      configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
-      elitism_count = (configuration.population_size * configuration.elitism_rate).round
-      elite_members = population.members.sort_by(&:fitness).last(elitism_count)
-      new_members = (configuration.population_size - elitism_count).times.map do
-        child_member = configuration.crossover_function.call(population.select_parents)
-        configuration.mutation_function.call(child_member).tap do |mutated_child|
-          if metadata.highest_fitness < mutated_child.fitness
-            metadata.highest_fitness = mutated_child.fitness
-            configuration.logger.info(metadata.to_h.merge({updated_highest_fitness: true}).to_json)
-            configuration.highest_fitness_callback.call(mutated_child)
-          end
-          configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
+      def run(
+        configuration: Configuration.new,
+        metadata: Metadata.new,
+        population: PetriDish::Population.seed(configuration)
+      )
+        if metadata.generation_count.zero?
+          configuration.logger.info "Run started."
+          metadata.start_time = Time.now
         end
+        configuration.logger.info(metadata.to_json)
+        configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
+        elitism_count = (configuration.population_size * configuration.elitism_rate).round
+        elite_members = population.members.sort_by(&:fitness).last(elitism_count)
+        new_members = (configuration.population_size - elitism_count).times.map do
+          child_member = configuration.crossover_function.call(population.select_parents)
+          configuration.mutation_function.call(child_member).tap do |mutated_child|
+            if metadata.highest_fitness < mutated_child.fitness
+              metadata.highest_fitness = mutated_child.fitness
+              configuration.logger.info(metadata.to_h.merge({updated_highest_fitness: true}).to_json)
+              configuration.highest_fitness_callback.call(mutated_child)
+            end
+            configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
+          end
+        end
+        new_population = PetriDish::Population.new(configuration: configuration, members: new_members + elite_members)
+        metadata.increment_generation
+        run(population: new_population, configuration: configuration, metadata: metadata)
       end
-      new_population = PetriDish::Population.new(members: new_members + elite_members)
-      metadata.increment_generation
-      run(population: new_population)
     end
   end
 end

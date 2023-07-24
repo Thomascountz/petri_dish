@@ -3,25 +3,59 @@ require_relative "../lib/petri_dish"
 target_genes = "the quick brown fox jumped over the lazy white dog".chars
 genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
 
-def genes_match_target_end_condition_function
+def genes_match_target_end_condition_function(configuration)
   ->(member) do
-    member.genes == PetriDish::World.configuration.target_genes
+    member.genes == configuration.target_genes
   end
 end
 
-PetriDish::World.configure do |config|
+def twenty_percent_tournament_function(configuration)
+  ->(population) do
+    population.members.sample(configuration.population_size * 0.2).max_by(2) { |member| member.fitness }
+  end
+end
+
+def exponential_fitness_function(configuration)
+  ->(member) do
+    member.genes.zip(configuration.target_genes).map do |target_gene, member_gene|
+      (target_gene == member_gene) ? 1 : 0
+    end.sum**3
+  end
+end
+
+def random_midpoint_crossover_function(configuration)
+  ->(parents) do
+    midpoint = rand(parents[0].genes.length)
+    PetriDish::Member.new(configuration: configuration, genes: parents[0].genes[0...midpoint] + parents[1].genes[midpoint..])
+  end
+end
+
+def random_mutation_function(configuration)
+  ->(member) do
+    mutated_genes = member.genes.map do |gene|
+      if rand < configuration.mutation_rate
+        configuration.genetic_material.sample
+      else
+        gene
+      end
+    end
+    PetriDish::Member.new(configuration: configuration, genes: mutated_genes)
+  end
+end
+
+configuration = PetriDish::Configuration.configure do |config|
   config.max_generations = 5000
   config.population_size = 250
   config.mutation_rate = 0.005
   config.genetic_material = genetic_material
   config.target_genes = target_genes
   config.gene_instantiation_function = -> { Array.new(target_genes.size) { genetic_material.sample } }
-  config.parents_selection_function = PetriDish::GeneticOperatorUtils::Selection.twenty_percent_tournament
-  config.fitness_function = PetriDish::GeneticOperatorUtils::Fitness.exponential
-  config.crossover_function = PetriDish::GeneticOperatorUtils::Crossover.random_midpoint
-  config.mutation_function = PetriDish::GeneticOperatorUtils::Mutation.random
-  config.end_condition_function = genes_match_target_end_condition_function
+  config.parents_selection_function = twenty_percent_tournament_function(config)
+  config.fitness_function = exponential_fitness_function(config)
+  config.crossover_function = random_midpoint_crossover_function(config)
+  config.mutation_function = random_mutation_function(config)
+  config.end_condition_function = genes_match_target_end_condition_function(config)
   config.highest_fitness_callback = ->(member) { puts "Highest fitness: #{member.fitness} (#{member})" }
 end
 
-PetriDish::World.new.run
+PetriDish::World.run(configuration: configuration)
