@@ -1,8 +1,4 @@
 require_relative "petri_dish/configuration"
-require_relative "petri_dish/genetic_operator_utils/crossover"
-require_relative "petri_dish/genetic_operator_utils/fitness"
-require_relative "petri_dish/genetic_operator_utils/mutation"
-require_relative "petri_dish/genetic_operator_utils/selection"
 require_relative "petri_dish/member"
 require_relative "petri_dish/metadata"
 require_relative "petri_dish/population"
