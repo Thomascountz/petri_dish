@@ -7,7 +7,6 @@ module PetriDish
       :elitism_rate,
       :target_genes,
       :max_generations,
-      :gene_instantiation_function,
       :parents_selection_function,
       :crossover_function,
       :mutation_function,
@@ -18,12 +17,6 @@ module PetriDish
       :next_generation_callback,
       :end_condition_reached_callback
 
-    def self.default_logger
-      @logger = Logger.new($stdout).tap do |logger|
-        logger.level = Logger::INFO
-      end
-    end
-
     def self.configure
       yield(configuration = new)
       configuration.validate!
@@ -31,14 +24,13 @@ module PetriDish
     end
 
     def initialize
-      @logger = Configuration.default_logger
+      @logger = default_logger
       @max_generations = default_max_generations
       @population_size = default_population_size
       @mutation_rate = default_mutation_rate
       @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
       @target_genes = default_target_genes
-      @gene_instantiation_function = default_gene_instantiation_function
       @fitness_function = default_fitness_function
       @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
@@ -58,7 +50,6 @@ module PetriDish
       raise ArgumentError, "elitism_rate must be between 0 and 1" unless elitism_rate >= 0 && elitism_rate < 1
       raise ArgumentError, "genetic_material must be an Array" unless genetic_material.is_a?(Array)
       raise ArgumentError, "target_genes must be an Array" unless target_genes.is_a?(Array)
-      raise ArgumentError, "gene_instantiation_function must respond to :call" unless gene_instantiation_function.respond_to?(:call)
       raise ArgumentError, "fitness_function must respond to :call" unless fitness_function.respond_to?(:call)
       raise ArgumentError, "parents_selection_function must respond to :call" unless parents_selection_function.respond_to?(:call)
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
@@ -71,14 +62,13 @@ module PetriDish
     end
 
     def reset!
-      @logger = Configuration.default_logger
+      @logger = default_logger
       @max_generations = default_max_generations
       @population_size = default_population_size
       @mutation_rate = default_mutation_rate
       @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
       @target_genes = default_target_genes
-      @gene_instantiation_function = default_gene_instantiation_function
       @fitness_function = default_fitness_function
       @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
@@ -92,6 +82,12 @@ module PetriDish
 
     private
 
+    def default_logger
+      @logger = Logger.new($stdout).tap do |logger|
+        logger.level = Logger::INFO
+      end
+    end
+
     def default_max_generations = 1
 
     def default_population_size = 100
@@ -104,13 +100,11 @@ module PetriDish
 
     def default_target_genes = nil
 
-    def default_gene_instantiation_function = -> { raise ArgumentError, "gene_instantiation_function must be set" }
+    def default_fitness_function = ->(_member) { raise ArgumentError, "fitness_function must be set" }
 
-    def default_fitness_function = -> { raise ArgumentError, "fitness_function must be set" }
+    def default_parents_selection_function = ->(_members) { raise ArgumentError, "parents_selection_function must be set" }
 
-    def default_parents_selection_function = ->(_population) { raise ArgumentError, "parents_selection_function must be set" }
-
-    def default_crossover_function = ->(parents) { raise ArgumentError, "crossover_function must be set" }
+    def default_crossover_function = ->(_members) { raise ArgumentError, "crossover_function must be set" }
 
     def default_mutation_function = ->(_member) { raise ArgumentError, "mutation_function must be set" }
 
@@ -118,6 +112,10 @@ module PetriDish
 
     def default_highest_fitness_callback = ->(_member) { :noop }
 
+    # TODO: We might want to consider whether we really want to use `exit` as a
+    # default callback. This will stop the entire Ruby process, which could be
+    # surprising behavior if the user of the library doesn't override these
+    # callbacks.
     def default_max_generation_reached_callback = -> { exit }
 
     def default_next_generation_callback = ->(_population) { :noop }

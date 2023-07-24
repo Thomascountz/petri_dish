@@ -1,14 +1,14 @@
 module PetriDish
   class Member
-    attr_reader :genes, :configuration
+    attr_reader :genes, :fitness_function
 
-    def initialize(configuration:, genes: nil)
-      @configuration = configuration
-      @genes = genes || configuration.gene_instantiation_function.call
+    def initialize(genes:, fitness_function:)
+      @fitness_function = fitness_function
+      @genes = genes
     end
 
     def fitness
-      @fitness ||= configuration.fitness_function.call(self)
+      @fitness ||= fitness_function.call(self)
     end
 
     def to_s

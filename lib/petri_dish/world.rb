@@ -16,9 +16,9 @@ module PetriDish
       attr_reader :configuration
 
       def run(
+        members:,
         configuration: Configuration.new,
-        metadata: Metadata.new,
-        population: PetriDish::Population.seed(configuration)
+        metadata: Metadata.new
       )
         if metadata.generation_count.zero?
           configuration.logger.info "Run started."
@@ -26,22 +26,30 @@ module PetriDish
         end
         configuration.logger.info(metadata.to_json)
         configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
+
         elitism_count = (configuration.population_size * configuration.elitism_rate).round
-        elite_members = population.members.sort_by(&:fitness).last(elitism_count)
+        elite_members = members.sort_by(&:fitness).last(elitism_count)
+
         new_members = (configuration.population_size - elitism_count).times.map do
-          child_member = configuration.crossover_function.call(population.select_parents)
+          child_member = configuration.crossover_function.call(configuration.parents_selection_function.call(members))
+
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
-              metadata.highest_fitness = mutated_child.fitness
+              metadata.set_highest_fitness(mutated_child.fitness)
               configuration.logger.info(metadata.to_h.merge({updated_highest_fitness: true}).to_json)
               configuration.highest_fitness_callback.call(mutated_child)
             end
+
+            # TODO: We might want to add a mechanism to break the recursion in
+            # the if `end_condition_reached_callback` is called.  We could
+            # achieve this by having the callbacks throw an exception or return
+            # a special value that we check for to break the loop.
             configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
           end
         end
-        new_population = PetriDish::Population.new(configuration: configuration, members: new_members + elite_members)
+
         metadata.increment_generation
-        run(population: new_population, configuration: configuration, metadata: metadata)
+        run(members: (new_members + elite_members), configuration: configuration, metadata: metadata)
       end
     end
   end

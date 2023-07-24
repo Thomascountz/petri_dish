@@ -14,6 +14,10 @@ module PetriDish
       @generation_count += 1
     end
 
+    def set_highest_fitness(fitness)
+      @highest_fitness = fitness
+    end
+
     def to_h
       {
         id: id,

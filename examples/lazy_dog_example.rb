@@ -10,8 +10,8 @@ def genes_match_target_end_condition_function(configuration)
 end
 
 def twenty_percent_tournament_function(configuration)
-  ->(population) do
-    population.members.sample(configuration.population_size * 0.2).max_by(2) { |member| member.fitness }
+  ->(members) do
+    members.sample(configuration.population_size * 0.2).max_by(2) { |member| member.fitness }
   end
 end
 
@@ -26,7 +26,7 @@ end
 def random_midpoint_crossover_function(configuration)
   ->(parents) do
     midpoint = rand(parents[0].genes.length)
-    PetriDish::Member.new(configuration: configuration, genes: parents[0].genes[0...midpoint] + parents[1].genes[midpoint..])
+    PetriDish::Member.new(fitness_function: configuration.fitness_function, genes: parents[0].genes[0...midpoint] + parents[1].genes[midpoint..])
   end
 end
 
@@ -39,7 +39,7 @@ def random_mutation_function(configuration)
         gene
       end
     end
-    PetriDish::Member.new(configuration: configuration, genes: mutated_genes)
+    PetriDish::Member.new(fitness_function: configuration.fitness_function, genes: mutated_genes)
   end
 end
 
@@ -49,7 +49,6 @@ configuration = PetriDish::Configuration.configure do |config|
   config.mutation_rate = 0.005
   config.genetic_material = genetic_material
   config.target_genes = target_genes
-  config.gene_instantiation_function = -> { Array.new(target_genes.size) { genetic_material.sample } }
   config.parents_selection_function = twenty_percent_tournament_function(config)
   config.fitness_function = exponential_fitness_function(config)
   config.crossover_function = random_midpoint_crossover_function(config)
@@ -58,4 +57,5 @@ configuration = PetriDish::Configuration.configure do |config|
   config.highest_fitness_callback = ->(member) { puts "Highest fitness: #{member.fitness} (#{member})" }
 end
 
-PetriDish::World.run(configuration: configuration)
+init_members = Array.new(configuration.population_size) { PetriDish::Member.new(fitness_function: configuration.fitness_function, genes: Array.new(target_genes.size) { genetic_material.sample }) }
+PetriDish::World.run(configuration: configuration, members: init_members)
