@@ -33,27 +33,104 @@ RSpec.describe PetriDish::World do
   end
 
   context "when the generation count is zero" do
-    it "logs the start of the run and starts the metadata" do
-      expect(configuration.logger).to receive(:info).with("Run started.")
+    it "starts the metadata" do
+      allow(metadata).to receive(:generation_count).and_return(0)
+
       expect(metadata).to receive(:start)
+      expect(described_class).to receive(:run).exactly(:once).and_call_original
+
       described_class.run(members: members, configuration: configuration, metadata: metadata)
+    end
+  end
+
+  context "when max_generations is more than zero" do
+    it "calls run recusively until generation_count reaches max_generations" do
+      allow(configuration).to receive(:end_condition_function).and_return(->(_member) { false })
+      allow(configuration).to receive(:max_generations).and_return(2)
+
+      expect(described_class).to receive(:run).exactly(3).times.and_call_original
+
+      described_class.run(members: members, configuration: configuration)
     end
   end
 
   context "when the generation count reaches max generations" do
-    it "calls max_generation_reached_callback and stops the recursion" do
+    it "calls max_generation_reached_callback" do
       allow(metadata).to receive(:generation_count).and_return(1)
-      allow(configuration).to receive(:max_generation_reached_callback).and_return(-> { :noop })
-      expect(described_class).to receive(:run).once.and_call_original
+      allow(configuration).to receive(:max_generations).and_return(1)
+      max_generation_reached_callback = -> { :noop }
+      allow(configuration).to receive(:max_generation_reached_callback).and_return(max_generation_reached_callback)
+
+      expect(max_generation_reached_callback).to receive(:call).once
+
+      described_class.run(members: members, configuration: configuration, metadata: metadata)
+    end
+
+    it "stops the recursion" do
+      allow(metadata).to receive(:generation_count).and_return(1)
+      allow(configuration).to receive(:max_generations).and_return(1)
+
+      expect(described_class).to receive(:run).exactly(:once).and_call_original
+
       described_class.run(members: members, configuration: configuration, metadata: metadata)
     end
   end
 
-  context "when a child member has higher fitness than the highest fitness" do
-    it "updates the highest fitness and calls highest_fitness_callback" do
-      allow(configuration).to receive(:mutation_function).and_return(->(_member) { double(PetriDish::Member, fitness: 1.0) })
-      expect(metadata).to receive(:set_highest_fitness).with(1.0)
-      expect(configuration).to receive(:highest_fitness_callback).and_return(->(_member) { :noop })
+  context "when a child member has higher fitness value than the current highest fitness" do
+    it "updates the highest fitness metadata" do
+      current_highest_fitness = 1.0
+      child_member_fitness = 2.0
+      child_member = instance_double(PetriDish::Member, fitness: child_member_fitness)
+      highest_fitness_callback = ->(_member) { :noop }
+      allow(configuration).to receive(:mutation_function).and_return(->(_member) { child_member })
+      allow(configuration).to receive(:highest_fitness_callback).and_return(highest_fitness_callback)
+      allow(metadata).to receive(:highest_fitness).and_return(current_highest_fitness)
+
+      expect(metadata).to receive(:set_highest_fitness).with(child_member_fitness)
+
+      described_class.run(members: members, configuration: configuration, metadata: metadata)
+    end
+
+    it "calls the highest_fitness_callback with the child member" do
+      current_highest_fitness = 1.0
+      child_member_fitness = 2.0
+      child_member = instance_double(PetriDish::Member, fitness: child_member_fitness)
+      highest_fitness_callback = double("->", call: :noop)
+      allow(configuration).to receive(:mutation_function).and_return(->(_member) { child_member })
+      allow(configuration).to receive(:highest_fitness_callback).and_return(highest_fitness_callback)
+      allow(metadata).to receive(:highest_fitness).and_return(current_highest_fitness)
+
+      expect(highest_fitness_callback).to receive(:call).with(child_member)
+
+      described_class.run(members: members, configuration: configuration, metadata: metadata)
+    end
+  end
+
+  context "when creating new members" do
+    it "creates a new members to fill in the next population" do
+      population_size = 100
+      elitism_rate = 0.2
+      elite_count = 20
+      new_members_count = population_size - elite_count
+
+      allow(configuration).to receive(:population_size).and_return(population_size)
+      allow(configuration).to receive(:elitism_rate).and_return(elitism_rate)
+
+      expect(configuration).to receive(:crossover_function).exactly(new_members_count).times
+      expect(configuration).to receive(:parents_selection_function).exactly(new_members_count).times
+
+      described_class.run(members: members, configuration: configuration, metadata: metadata)
+    end
+  end
+
+  context "when the end condition is met" do
+    it "calls end_condition_reached_callback" do
+      allow(configuration).to receive(:end_condition_function).and_return(->(_member) { true })
+      end_condition_reached_callback = ->(_member) { :noop }
+      allow(configuration).to receive(:end_condition_reached_callback).and_return(end_condition_reached_callback)
+
+      expect(end_condition_reached_callback).to receive(:call).once
+
       described_class.run(members: members, configuration: configuration, metadata: metadata)
     end
   end
@@ -62,17 +139,11 @@ RSpec.describe PetriDish::World do
     it "calls end_condition_reached_callback and stops the recursion" do
       allow(configuration).to receive(:end_condition_function).and_return(->(_member) { true })
       allow(configuration).to receive(:end_condition_reached_callback).and_return(->(_member) { :noop })
-      expect(described_class).to receive(:run).once.and_call_original
+
+      expect(described_class).to receive(:run).exactly(:once).and_call_original
+
       described_class.run(members: members, configuration: configuration, metadata: metadata)
     end
   end
 
-  context "with recursion" do
-    it "calls run again with updated members, configuration, and metadata" do
-      allow(configuration).to receive(:end_condition_function).and_return(->(_member) { false })
-      allow(configuration).to receive(:max_generations).and_return(2)
-      expect(described_class).to receive(:run).thrice.and_call_original
-      described_class.run(members: members, configuration: configuration)
-    end
-  end
 end
