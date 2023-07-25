@@ -131,4 +131,4 @@ init_members = Array.new(configuration.population_size) { PetriDish::Member.new(
 PetriDish::World.run(configuration: configuration, members: init_members)
 
 # View CSV with YouPlot (https://github.com/red-data-tools/YouPlot):
-# ruby examples/salesperson_example.rb && uplot line best_member.csv --canvas dot -h 45 -w 150 -H -d ','
+# ruby examples/salesperson_example.rb && uplot line best_member.csv --canvas dot -h 45 -w 150 -H -d ',' && rm best_member.csv
