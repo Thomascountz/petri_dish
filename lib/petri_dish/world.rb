@@ -36,7 +36,7 @@ module PetriDish
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
               metadata.set_highest_fitness(mutated_child.fitness)
-              configuration.logger.info(metadata.to_h.merge({updated_highest_fitness: true}).to_json)
+              configuration.logger.info(metadata.to_json)
               configuration.highest_fitness_callback.call(mutated_child)
             end
 
