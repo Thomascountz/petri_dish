@@ -13,21 +13,27 @@ module PetriDish
   class World
     class << self
       attr_accessor :metadata
-      attr_reader :configuration
+      attr_reader :configuration, :end_condition_reached
 
       def run(
         members:,
         configuration: Configuration.new,
-        metadata: Metadata.new,
-        max_depth: 10000
+        metadata: Metadata.new
       )
-        return if max_depth.zero?
+        end_condition_reached = false
+        max_generation_reached = false
+
         if metadata.generation_count.zero?
           configuration.logger.info "Run started."
           metadata.start
         end
+
         configuration.logger.info(metadata.to_json)
-        configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
+
+        if metadata.generation_count >= configuration.max_generations
+          configuration.max_generation_reached_callback.call
+          max_generation_reached = true
+        end
 
         elitism_count = (configuration.population_size * configuration.elitism_rate).round
         elite_members = members.sort_by(&:fitness).last(elitism_count)
@@ -38,20 +44,20 @@ module PetriDish
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
               metadata.set_highest_fitness(mutated_child.fitness)
-              configuration.logger.info(metadata.to_json)
               configuration.highest_fitness_callback.call(mutated_child)
+
+              configuration.logger.info(metadata.to_json)
             end
 
-            # TODO: We might want to add a mechanism to break the recursion in
-            # the if `end_condition_reached_callback` is called.  We could
-            # achieve this by having the callbacks throw an exception or return
-            # a special value that we check for to break the loop.
-            configuration.end_condition_reached_callback.call(mutated_child) if configuration.end_condition_function.call(mutated_child)
+            if configuration.end_condition_function.call(mutated_child)
+              configuration.end_condition_reached_callback.call(mutated_child)
+              end_condition_reached = true
+            end
           end
         end
 
         metadata.increment_generation
-        run(members: (new_members + elite_members), configuration: configuration, metadata: metadata, max_depth: max_depth - 1)
+        run(members: (new_members + elite_members), configuration: configuration, metadata: metadata) unless end_condition_reached || max_generation_reached
       end
     end
   end
