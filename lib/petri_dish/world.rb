@@ -18,11 +18,13 @@ module PetriDish
       def run(
         members:,
         configuration: Configuration.new,
-        metadata: Metadata.new
+        metadata: Metadata.new,
+        max_depth: 10000
       )
+        return if max_depth.zero?
         if metadata.generation_count.zero?
           configuration.logger.info "Run started."
-          metadata.start_time = Time.now
+          metadata.start
         end
         configuration.logger.info(metadata.to_json)
         configuration.max_generation_reached_callback.call if metadata.generation_count >= configuration.max_generations
@@ -49,7 +51,7 @@ module PetriDish
         end
 
         metadata.increment_generation
-        run(members: (new_members + elite_members), configuration: configuration, metadata: metadata)
+        run(members: (new_members + elite_members), configuration: configuration, metadata: metadata, max_depth: max_depth - 1)
       end
     end
   end

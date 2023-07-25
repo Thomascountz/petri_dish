@@ -1,7 +1,6 @@
 module PetriDish
   class Metadata
-    attr_reader :generation_count, :id
-    attr_accessor :highest_fitness, :start_time, :last_fitness_increase
+    attr_reader :generation_count, :id, :start_time, :highest_fitness, :last_fitness_increase
 
     def initialize
       @id = SecureRandom.uuid
@@ -9,6 +8,10 @@ module PetriDish
       @highest_fitness = 0
       @last_fitness_increase = 0
       @start_time = nil
+    end
+
+    def start
+      @start_time = Time.now
     end
 
     def increment_generation
