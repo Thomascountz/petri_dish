@@ -20,6 +20,8 @@ module PetriDish
         configuration: Configuration.new,
         metadata: Metadata.new
       )
+        configuration.next_generation_callback.call
+
         end_condition_reached = false
         max_generation_reached = false
 

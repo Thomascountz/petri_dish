@@ -23,6 +23,7 @@ RSpec.describe PetriDish::World do
     allow(configuration).to receive(:highest_fitness_callback).and_return(->(_member) { :noop })
     allow(configuration).to receive(:max_generation_reached_callback).and_return(-> { :noop })
     allow(configuration).to receive(:end_condition_reached_callback).and_return(->(_member) { :noop })
+    allow(configuration).to receive(:next_generation_callback).and_return(-> { :noop })
 
     allow(metadata).to receive(:generation_count).and_return(0)
     allow(metadata).to receive(:highest_fitness).and_return(0.0)
@@ -50,6 +51,15 @@ RSpec.describe PetriDish::World do
 
       expect(described_class).to receive(:run).exactly(3).times.and_call_original
 
+      described_class.run(members: members, configuration: configuration)
+    end
+  end
+
+  context "on every recusive run" do
+    it "calls next_generation_callback" do
+      allow(configuration).to receive(:max_generations).and_return(5)
+      allow(configuration).to receive(:end_condition_function).and_return(->(_member) { false })
+      expect(configuration).to receive(:next_generation_callback).exactly(6).times
       described_class.run(members: members, configuration: configuration)
     end
   end
@@ -145,5 +155,4 @@ RSpec.describe PetriDish::World do
       described_class.run(members: members, configuration: configuration, metadata: metadata)
     end
   end
-
 end
