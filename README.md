@@ -1,7 +1,7 @@
 # Petri Dish - A Ruby library for Evolutionary Algorithms
 
 > [!IMPORTANT]\
-> `gem install petri_dish_lab` to install the gem, _not_ `petri_dish`.
+> the name of the gem is [`petri_dish_lab`](https://rubygems.org/gems/petri_dish_lab), _not_ `petri_dish`.
 
 ## Introduction
 
