@@ -20,7 +20,7 @@ module PetriDish
         configuration: Configuration.new,
         metadata: Metadata.new
       )
-        configuration.generation_start_callback.call(metadata.generation_count)
+        configuration.generation_start_callback&.call(metadata.generation_count)
 
         end_condition_reached = false
         max_generation_reached = false
@@ -33,7 +33,7 @@ module PetriDish
         configuration.logger.info(metadata.to_json)
 
         if metadata.generation_count >= configuration.max_generations
-          configuration.max_generation_reached_callback.call
+          configuration.max_generation_reached_callback&.call
           max_generation_reached = true
         end
 
@@ -46,13 +46,13 @@ module PetriDish
           configuration.mutation_function.call(child_member).tap do |mutated_child|
             if metadata.highest_fitness < mutated_child.fitness
               metadata.set_highest_fitness(mutated_child.fitness)
-              configuration.highest_fitness_callback.call(mutated_child)
+              configuration.highest_fitness_callback&.call(mutated_child)
 
               configuration.logger.info(metadata.to_json)
             end
 
             if configuration.end_condition_function.call(mutated_child)
-              configuration.end_condition_reached_callback.call(mutated_child)
+              configuration.end_condition_reached_callback&.call(mutated_child)
               end_condition_reached = true
             end
           end

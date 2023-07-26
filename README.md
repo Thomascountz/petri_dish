@@ -50,11 +50,11 @@ The `Configuration` class in Petri Dish allows you to customize various aspects 
 | `crossover_function`              | A function used to perform crossover between two parents                                                                               | `Proc[Array[Member], Member]`        |
 | `mutation_function`               | A function used to mutate the genes of an individual                                                                                   | `Proc[Member, Member]`               |
 | `fitness_function`                | A function used to calculate the fitness of an individual                                                                              | `Proc[Member, Numeric]`              |
-| `highest_fitness_callback`        | A callback function invoked when a new highest fitness is found                                                                        | `Proc[Member, void]`                 |
-| `max_generation_reached_callback` | A callback function invoked when the maximum number of generations is reached                                                          | `Proc[void, void]`                   |
-| `end_condition_function`          | A function that determines whether the evolution process should stop premature of `max_generations`                                    | `Proc[Member, bool]`                 |
-| `generation_start_callback`       | A callback function invoked at the start of each new generation                                                                        | `Proc[void, void]`                   |
-| `end_condition_reached_callback`  | A callback function invoked when the end condition is met. It is called with the `Member` which triggered the `end_condition_function` | `Proc[Member, void]`                 |
+| `highest_fitness_callback`        | A callback function invoked when a new highest fitness is found                                                                        | `nil | Proc[Member, void]`                 |
+| `max_generation_reached_callback` | A callback function invoked when the maximum number of generations is reached                                                          | `nil | Proc[void, void]`                   |
+| `end_condition_function`          | A function that determines whether the evolution process should stop premature of `max_generations`                                    | `nil | Proc[Member, bool]`                 |
+| `generation_start_callback`       | A callback function invoked at the start of each new generation                                                                        | `nil | Proc[Integer, void]`                   |
+| `end_condition_reached_callback`  | A callback function invoked when the end condition is met. It is called with the `Member` which triggered the `end_condition_function` | `nil | Proc[Member, void]`                 |
 
 You can create a new `Configuration` object by calling `Configuration.configure` and providing a block:
 

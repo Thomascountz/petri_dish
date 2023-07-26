@@ -55,10 +55,10 @@ module PetriDish
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
       raise ArgumentError, "mutation_function must respond to :call" unless mutation_function.respond_to?(:call)
       raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.respond_to?(:call)
-      raise ArgumentError, "highest_fitness_callback must respond to :call" unless highest_fitness_callback.respond_to?(:call)
-      raise ArgumentError, "max_generation_reached_callback must respond to :call" unless max_generation_reached_callback.respond_to?(:call)
-      raise ArgumentError, "generation_start_callback must respond to :call" unless generation_start_callback.respond_to?(:call)
-      raise ArgumentError, "end_condition_reached_callback must respond to :call" unless end_condition_reached_callback.respond_to?(:call)
+      raise ArgumentError, "highest_fitness_callback must respond to :call" unless highest_fitness_callback.nil? || highest_fitness_callback.respond_to?(:call)
+      raise ArgumentError, "max_generation_reached_callback must respond to :call" unless max_generation_reached_callback.nil? || max_generation_reached_callback.respond_to?(:call)
+      raise ArgumentError, "generation_start_callback must respond to :call" unless generation_start_callback.nil? || generation_start_callback.respond_to?(:call)
+      raise ArgumentError, "end_condition_reached_callback must respond to :call" unless end_condition_reached_callback.nil? || end_condition_reached_callback.respond_to?(:call)
     end
 
     def reset!
@@ -110,16 +110,16 @@ module PetriDish
 
     def default_end_condition_function = ->(_member) { false }
 
-    def default_highest_fitness_callback = ->(_member) { :noop }
+    def default_highest_fitness_callback = nil
 
     # TODO: We might want to consider whether we really want to use `exit` as a
     # default callback. This will stop the entire Ruby process, which could be
     # surprising behavior if the user of the library doesn't override these
     # callbacks.
-    def default_max_generation_reached_callback = -> { exit }
+    def default_max_generation_reached_callback = nil
 
-    def default_generation_start_callback = ->(_generation) { :noop }
+    def default_generation_start_callback = nil
 
-    def default_end_condition_reached_callback = ->(_member) { exit }
+    def default_end_condition_reached_callback = nil
   end
 end
