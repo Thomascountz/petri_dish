@@ -1,3 +1,4 @@
+# require "petri_dish" # Uncomment this line and comment/remove the line below if you're using Petri Dish as a gem
 require_relative "../lib/petri_dish"
 
 target_genes = "the quick brown fox jumped over the lazy white dog".chars

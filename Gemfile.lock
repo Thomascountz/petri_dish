@@ -1,9 +1,26 @@
+PATH
+  remote: .
+  specs:
+    petri_dish_lab (0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.4.2)
     diff-lcs (1.5.0)
+    json (2.6.3)
     language_server-protocol (3.17.0.3)
+    lint_roller (1.1.0)
+    parallel (1.23.0)
+    parser (3.2.2.3)
+      ast (~> 2.4.1)
+      racc
     prettier_print (1.2.1)
+    racc (1.7.1)
+    rainbow (3.1.1)
+    rake (13.0.6)
+    regexp_parser (2.8.1)
+    rexml (3.2.5)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -17,20 +34,54 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    ruby-lsp (0.7.3)
+    rubocop (1.52.1)
+      json (~> 2.3)
+      parallel (~> 1.10)
+      parser (>= 3.2.2.3)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.29.0)
+      parser (>= 3.2.1.0)
+    rubocop-performance (1.18.0)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    ruby-lsp (0.7.4)
       language_server-protocol (~> 3.17.0)
       sorbet-runtime
       syntax_tree (>= 6.1.1, < 7)
-    sorbet-runtime (0.5.10929)
+    ruby-progressbar (1.13.0)
+    sorbet-runtime (0.5.10931)
+    standard (1.30.1)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.52.0)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.1.0)
+    standard-custom (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50)
+    standard-performance (1.1.2)
+      lint_roller (~> 1.1)
+      rubocop-performance (~> 1.18.0)
+    standardrb (1.0.1)
+      standard
     syntax_tree (6.1.1)
       prettier_print (>= 1.2.0)
+    unicode-display_width (2.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  petri_dish_lab!
+  rake
   rspec
   ruby-lsp
+  standardrb
 
 BUNDLED WITH
    2.4.17
