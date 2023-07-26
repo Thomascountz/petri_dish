@@ -5,13 +5,13 @@
 
 ## Introduction
 
-Welcome to Petri Dish, a Ruby library designed to provide an easy-to-use interface for implementing evolutionary algorithms. Petri Dish is a flexible library that allows you to configure and run your own evolutionary algorithms by simply providing your own genetic material, fitness function, and other parameters. This library is perfect for both beginners who are just starting to learn about evolutionary algorithms, and experts who want to experiment with different configurations and parameters.
+Welcome to Petri Dish, a Ruby library designed to provide a flexible interface for implementing evolutionary algorithms. Petri Dish allows you to configure and run your own evolutionary algorithms by providing configurations for genetic material, fitness function, and other parameters. This library is aimed at experimenting with various configurations of evolutionary algorithms and is not meant for production.
 
 ## Overview of Evolutionary Algorithms
 
-Evolutionary algorithms are a class of optimization algorithms that are inspired by the process of natural evolution. They work by maintaining a population of candidate solutions for the problem at hand and iteratively improving that population by applying operations that mimic natural evolution, such as mutation, crossover (or recombination), and selection.
+Evolutionary algorithms are a class of optimization algorithms that are inspired by the process of natural evolution. They work by maintaining a population of candidate solutions for a specific problem and iteratively evolving that population by applying operations that mimic natural evolution, such as mutation, crossover (or recombination), and selection.
 
-The basic steps of an evolutionary algorithm are as follows:
+The high-level steps of an evolutionary algorithm are:
 
 1. **Initialization**: Begin with a population of randomly generated individuals.
 2. **Evaluation**: Compute the fitness of each individual in the population.
@@ -29,17 +29,15 @@ Petri Dish is built around a few key classes: `Configuration`, `Member`, `Metada
 
 - `Member`: This class represents an individual in the population. It has a set of genes and a fitness value, which is computed by a fitness function provided in the configuration.
 
-- `Metadata`: This class keeps track of the evolution process, like the number of generations that have passed and the highest fitness value found so far.
+- `Metadata`: This class keeps track of the evolution process, like the number of generations that have passed and the highest fitness value found so far. Metadata isn't exposed publically.
 
-- `World`: This class is responsible for running the evolutionary algorithm. It takes a configuration and a population of members as input, and runs the evolution process until a termination condition is met.
+- `World`: This class is responsible for running the evolutionary algorithm. It takes a configuration and a population of members as input, and runs the evolution process recursively until a termination condition is met.
 
 ## Configuration
 
 The `Configuration` class in Petri Dish allows you to customize various aspects of the evolutionary algorithm. Here are the parameters you can set:
 
-Here is the reformatted list as a markdown table:
-
-| Parameter | Description | Type |
+| Parameter | Description | RBS Type Description |
 |---|---|---|
 | `logger` | An object that responds to `:info` for logging purposes | `Logger` |
 | `population_size` | The number of individuals in the population | `Integer` |
@@ -62,38 +60,39 @@ You can create a new `Configuration` object by calling `Configuration.configure`
 
 ```ruby
 configuration = PetriDish::Configuration.configure do |config|
-  # set your configuration parameters here
+  config.logger = Logger.new($stdout)
+  config.population_size = 100
+  # ...cont
 end
 ```
-
-In the block, you can set the parameters of the configuration to customize the behavior of your evolutionary algorithm.
 
 ## Member
 
 The `Member` class in Petri Dish represents an individual in the population. Each member has a set of genes and a fitness value, which is calculated by a fitness function provided in the configuration. Here are the parameters and methods you can interact with:
 
-- `new(genes:, fitness_function:)`: This method is used to create a new member. It takes an array of genes and a fitness function as arguments.
+- `Member#new(genes:, fitness_function:)`: This method is used to create a new member. It takes an array of genes and a fitness function as arguments.
+  
+- `Member#genes` (`Array[untyped]`): The genetic material of the individual, represented as an array.
+  
+- `Configuration#fitness_function`: (`Proc[Member, Float]`): The function used to calculate the fitness of the individual. It is provided during the initialization of the member.
+  
+- `Member#fitness`: This method calls the provided fitness function. The resulting fitness value is cached after the first calculation and reused in subsequent calls. 
 
-- `genes` (`Array[untyped]`): The genetic material of the individual, represented as an array .
-
-- `fitness_function`  (`Proc[Member, Float]`): The function used to calculate the fitness of the individual. It is provided during the initialization of the member.
-
-- `fitness`: This method calls the provided fitness function. The resulting fitness value is cached after the first calculation and reused in subsequent calls. 
 
 Here's an example of how to create a new member:
 
 ```ruby
 member = PetriDish::Member.new(
-  genes: ["gene1", "gene2", "gene3"],
-  fitness_function: ->(member) { # calculate fitness }
+  genes: [1, 1, 0, 1, 0, 1],
+  fitness_function: ->(member) { member.genes.sum }
 )
 ```
 
-In this example, `["gene1", "gene2", "gene3"]` is the genetic material for the member, and the lambda function is used to calculate the fitness of the member. You should replace `# calculate fitness` with the actual logic for calculating fitness based on the problem you're trying to solve.
+In this example, `[1, 1, 0, 1, 0, 1]` is the genetic material for the member, and the lambda function is used to calculate the fitness of the member (in this example, we take the sum of the Array).
 
 ## Fitness Function
 
-A fitness function is crucial as it provides a way to evaluate how good or "fit" an individual member of the population is in solving the problem at hand. The fitness function is a measure of quality or performance, and it guides the evolutionary algorithm in the search for optimal solutions.
+Modelling a meaningful fitness function is crucial as it provides a way to evaluate how good or "fit" an individual member of the population is in solving the problem at hand. The fitness function is a measure of quality or performance, and it guides the evolutionary algorithm in the search for optimal solutions.
 
 Here are the necessary technical properties required when defining a fitness function for the Petri Dish framework:
 
@@ -105,16 +104,16 @@ Here are the necessary technical properties required when defining a fitness fun
 
 4. Deterministic: Given the same `Member`, the fitness function should always return the same fitness score. This is because the fitness of a member may be evaluated multiple times during the evolutionary process, and inconsistent results could lead to unpredictable behavior.
 
-5. Non-negative: The fitness function should ideally return non-negative values. This isn't a strict requirement, but having non-negative fitness values can make the algorithm easier to understand and debug.
+5. Discriminative: The fitness function should be able to discriminate between different members of the population. That is, members with different genes should have different fitness scores. If many members have the same fitness score, the evolutionary algorithm will have a harder time deciding which members are better.
 
-6. Discriminative: The fitness function should be able to discriminate between different members of the population. That is, members with different genes should have different fitness scores. If many members have the same fitness score, the evolutionary algorithm will have a harder time deciding which members are better.
+6. Non-negative: The fitness function should ideally return non-negative values. This isn't a strict requirement, but having non-negative fitness values can make the algorithm easier to understand and debug.
 
 ## Install and Setup
 
 > [!WARNING]\
+> The name of the _gem_ is `petri_dish_lab`.
 > The name of the _repo_ is `petri_dish`.\
 > The name of the _module_ is `PetriDish`.\
-> The name of the _gem_ is `petri_dish_lab`.
 
 You can install `petri_dish_lab` as a gem in your application. Add this line to your application's Gemfile:
 
@@ -184,6 +183,8 @@ If you add new code, remember to add corresponding tests and ensure all tests pa
 
 ## Examples
 
+Several example problems are configured and solved in the `/examples` directory.
+
 ### Lazy Dog Example
 
 The `lazy_dog_example.rb` is an example of using the Petri Dish library to solve a simple problem: Evolving a string to match "the quick brown fox jumped over the lazy white dog". This is a classic example of using a genetic algorithm to find a solution to a problem.
@@ -219,8 +220,6 @@ To run the example, simply execute the following command in your terminal:
 ```bash
 bundle exec ruby examples/salesperson_example.rb
 ```
-
-You can then visualize the best route using the provided `uplot` command.
 
 ## Resources
   - [Genetic Algorithms Explained By Example - Youtube](https://www.youtube.com/watch?v=uQj5UNhCPuo)
