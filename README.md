@@ -1,5 +1,8 @@
 # Petri Dish - A Ruby library for Evolutionary Algorithms
 
+> **Note**
+> `gem install petridish` to install the gem, _not_ `petri_dish`.
+
 ## Introduction
 
 Welcome to Petri Dish, a Ruby library designed to provide an easy-to-use interface for implementing evolutionary algorithms. Petri Dish is a flexible library that allows you to configure and run your own evolutionary algorithms by simply providing your own genetic material, fitness function, and other parameters. This library is perfect for both beginners who are just starting to learn about evolutionary algorithms, and experts who want to experiment with different configurations and parameters.
@@ -106,6 +109,79 @@ Here are the necessary technical properties required when defining a fitness fun
 
 6. Discriminative: The fitness function should be able to discriminate between different members of the population. That is, members with different genes should have different fitness scores. If many members have the same fitness score, the evolutionary algorithm will have a harder time deciding which members are better.
 
+## Install and Setup
+
+> **Warning**
+> The name of the _repo_ is `petri_dish`.
+> The name of the _module_ is `PetriDish`.
+> The name of the _gem_ is `petridish`.
+
+You can install `petridish` as a gem in your application. Add this line to your application's Gemfile:
+
+```ruby
+gem 'petridish'
+```
+
+And then execute:
+
+```bash
+bundle install
+```
+
+Or install it yourself as:
+
+```bash
+gem install petridish
+```
+
+At the top of your Ruby file, require the `petridish` _module_ name:
+
+```ruby
+require "petri_dish"
+```
+
+### Setup for Development
+
+If you want to set up the `petridish` gem for development, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/thomascountz/petri_dish.git
+```
+
+2. Change into the `petri_dish` directory:
+
+```bash
+cd petri_dish
+```
+
+3. Run the setup script:
+
+```bash
+bin/setup
+```
+
+This will install the necessary dependencies for development and testing.
+
+### Using Console for Development
+
+After setting up, you can use the development console to experiment with the `petri_dish` library:
+
+```bash
+bin/console
+```
+
+This will start an interactive Ruby session (IRB) with `PetriDish` pre-loaded. You can use this console to experiment with `PetriDish`, create `PetriDish::Member` instances, run evolutionary algorithms, etc.
+
+Remember to run your tests frequently during development to ensure everything is working as expected:
+
+```bash
+bundle exec rspec
+```
+
+If you add new code, remember to add corresponding tests and ensure all tests pass before committing your changes.
+
 ## Examples
 
 ### Lazy Dog Example
@@ -123,7 +199,7 @@ The end condition for the evolutionary process is when a member with genes exact
 To run the example, simply execute the following command in your terminal:
 
 ```bash
-ruby examples/lazy_dog_example.rb
+bundle exec ruby examples/lazy_dog_example.rb
 ```
 
 ### Traveling Salesperson Example
@@ -141,7 +217,17 @@ The evolutionary process runs for a fixed number of generations, and the highest
 To run the example, simply execute the following command in your terminal:
 
 ```bash
-ruby examples/salesperson_example.rb
+bundle exec ruby examples/salesperson_example.rb
 ```
 
 You can then visualize the best route using the provided `uplot` command.
+
+## Resources
+  - [Genetic Algorithms Explained By Example - Youtube](https://www.youtube.com/watch?v=uQj5UNhCPuo)
+  - [Genetic Algorithms for Autonomous Robot Navigation - Paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.208.9941&rep=rep1&type=pdf)
+  - [Nature of Code, Chapter 9 - The Evolution of Code - Book](https://natureofcode.com/book/chapter-9-the-evolution-of-code/)
+  - [Weighted Random Sampling in Ruby - Gist](https://gist.github.com/O-I/3e0654509dd8057b539a)
+  - [Tail Call Optimization in Ruby - Blog](https://nithinbekal.com/posts/ruby-tco/)
+  - [Neural network and genetic algorithm based global path planning in a static environment - Paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.583.3340&rep=rep1&type=pdf)
+  - [Traveling Salesman Problem using Genetic Algorithm - Blog](https://www.geeksforgeeks.org/traveling-salesman-problem-using-genetic-algorithm/)
+  - [A KNOWLEDGE-BASED GENETIC ALGORITHM FOR PATH PLANNING OF MOBILE ROBOTS - Thesis](https://atrium.lib.uoguelph.ca/xmlui/bitstream/handle/10214/22039/Hu_Yanrong_MSc.pdf?sequence=2)

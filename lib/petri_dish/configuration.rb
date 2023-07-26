@@ -118,7 +118,7 @@ module PetriDish
     # callbacks.
     def default_max_generation_reached_callback = -> { exit }
 
-    def default_next_generation_callback = ->(_population) { :noop }
+    def default_next_generation_callback = ->(_generation) { :noop }
 
     def default_end_condition_reached_callback = ->(_member) { exit }
   end

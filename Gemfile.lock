@@ -1,9 +1,15 @@
+PATH
+  remote: .
+  specs:
+    petridish (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.5.0)
     language_server-protocol (3.17.0.3)
     prettier_print (1.2.1)
+    rake (13.0.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -17,11 +23,11 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
     rspec-support (3.12.1)
-    ruby-lsp (0.7.3)
+    ruby-lsp (0.7.4)
       language_server-protocol (~> 3.17.0)
       sorbet-runtime
       syntax_tree (>= 6.1.1, < 7)
-    sorbet-runtime (0.5.10929)
+    sorbet-runtime (0.5.10931)
     syntax_tree (6.1.1)
       prettier_print (>= 1.2.0)
 
@@ -29,6 +35,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  petridish!
+  rake
   rspec
   ruby-lsp
 
