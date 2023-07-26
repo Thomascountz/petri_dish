@@ -37,24 +37,24 @@ Petri Dish is built around a few key classes: `Configuration`, `Member`, `Metada
 
 The `Configuration` class in Petri Dish allows you to customize various aspects of the evolutionary algorithm. Here are the parameters you can set:
 
-| Parameter | Description | RBS Type Description |
-|---|---|---|
-| `logger` | An object that responds to `:info` for logging purposes | `Logger` |
-| `population_size` | The number of individuals in the population | `Integer` |
-| `mutation_rate` | The chance that a gene will change during mutation (between 0 and 1, inclusive) | `Float` |
-| `genetic_material` | An array of possible gene values | `Array[untyped]` |
-| `elitism_rate` | The proportion of the population preserved through elitism (between 0 and 1, inclusive) | `Float` |
-| `target_genes` | The ideal set of genes for the problem at hand | `Array[untyped]` |
-| `max_generations` | The maximum number of generations to run the evolution for | `Integer` |
-| `parents_selection_function` | A function used to select parents for crossover | `Proc[Array[Member], Array[Member]]` |
-| `crossover_function` | A function used to perform crossover between two parents | `Proc[Array[Member], Member]` |
-| `mutation_function` | A function used to mutate the genes of an individual | `Proc[Member, Member]` |
-| `fitness_function` | A function used to calculate the fitness of an individual | `Proc[Member, Numeric]` |
-| `highest_fitness_callback` | A callback function invoked when a new highest fitness is found | `Proc[Member, void]` |
-| `max_generation_reached_callback` | A callback function invoked when the maximum number of generations is reached | `Proc[void, void]` |
-| `end_condition_function` | A function that determines whether the evolution process should stop premature of `max_generations` | `Proc[Member, bool]` |
-| `next_generation_callback` | A callback function invoked at the start of each new generation | `Proc[void, void]` |
-| `end_condition_reached_callback` | A callback function invoked when the end condition is met. It is called with the `Member` which triggered the `end_condition_function` | `Proc[Member, void]` |
+| Parameter                         | Description                                                                                                                            | RBS Type Description                 |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| `logger`                          | An object that responds to `:info` for logging purposes                                                                                | `Logger`                             |
+| `population_size`                 | The number of individuals in the population                                                                                            | `Integer`                            |
+| `mutation_rate`                   | The chance that a gene will change during mutation (between 0 and 1, inclusive)                                                        | `Float`                              |
+| `genetic_material`                | An array of possible gene values                                                                                                       | `Array[untyped]`                     |
+| `elitism_rate`                    | The proportion of the population preserved through elitism (between 0 and 1, inclusive)                                                | `Float`                              |
+| `target_genes`                    | The ideal set of genes for the problem at hand                                                                                         | `Array[untyped]`                     |
+| `max_generations`                 | The maximum number of generations to run the evolution for                                                                             | `Integer`                            |
+| `parents_selection_function`      | A function used to select parents for crossover                                                                                        | `Proc[Array[Member], Array[Member]]` |
+| `crossover_function`              | A function used to perform crossover between two parents                                                                               | `Proc[Array[Member], Member]`        |
+| `mutation_function`               | A function used to mutate the genes of an individual                                                                                   | `Proc[Member, Member]`               |
+| `fitness_function`                | A function used to calculate the fitness of an individual                                                                              | `Proc[Member, Numeric]`              |
+| `highest_fitness_callback`        | A callback function invoked when a new highest fitness is found                                                                        | `Proc[Member, void]`                 |
+| `max_generation_reached_callback` | A callback function invoked when the maximum number of generations is reached                                                          | `Proc[void, void]`                   |
+| `end_condition_function`          | A function that determines whether the evolution process should stop premature of `max_generations`                                    | `Proc[Member, bool]`                 |
+| `generation_start_callback`       | A callback function invoked at the start of each new generation                                                                        | `Proc[void, void]`                   |
+| `end_condition_reached_callback`  | A callback function invoked when the end condition is met. It is called with the `Member` which triggered the `end_condition_function` | `Proc[Member, void]`                 |
 
 You can create a new `Configuration` object by calling `Configuration.configure` and providing a block:
 

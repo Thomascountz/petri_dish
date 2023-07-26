@@ -23,7 +23,7 @@ RSpec.describe PetriDish::World do
     allow(configuration).to receive(:highest_fitness_callback).and_return(->(_member) { :noop })
     allow(configuration).to receive(:max_generation_reached_callback).and_return(-> { :noop })
     allow(configuration).to receive(:end_condition_reached_callback).and_return(->(_member) { :noop })
-    allow(configuration).to receive(:next_generation_callback).and_return(->(_generation_count) { :noop })
+    allow(configuration).to receive(:generation_start_callback).and_return(->(_generation_count) { :noop })
 
     allow(metadata).to receive(:generation_count).and_return(0)
     allow(metadata).to receive(:highest_fitness).and_return(0.0)
@@ -56,17 +56,17 @@ RSpec.describe PetriDish::World do
   end
 
   context "on every recusive run" do
-    it "calls next_generation_callback" do
+    it "calls generation_start_callback" do
       allow(configuration).to receive(:max_generations).and_return(5)
-      allow(configuration).to receive(:next_generation_callback).and_return(next_generation_callback = ->(_generation_count) { :noop })
+      allow(configuration).to receive(:generation_start_callback).and_return(generation_start_callback = ->(_generation_count) { :noop })
       allow(configuration).to receive(:end_condition_function).and_return(->(_member) { false })
 
-      expect(next_generation_callback).to receive(:call).with(0).ordered
-      expect(next_generation_callback).to receive(:call).with(1).ordered
-      expect(next_generation_callback).to receive(:call).with(2).ordered
-      expect(next_generation_callback).to receive(:call).with(3).ordered
-      expect(next_generation_callback).to receive(:call).with(4).ordered
-      expect(next_generation_callback).to receive(:call).with(5).ordered
+      expect(generation_start_callback).to receive(:call).with(0).ordered
+      expect(generation_start_callback).to receive(:call).with(1).ordered
+      expect(generation_start_callback).to receive(:call).with(2).ordered
+      expect(generation_start_callback).to receive(:call).with(3).ordered
+      expect(generation_start_callback).to receive(:call).with(4).ordered
+      expect(generation_start_callback).to receive(:call).with(5).ordered
 
       described_class.run(members: members, configuration: configuration)
     end
