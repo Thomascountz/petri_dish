@@ -1,6 +1,6 @@
 # Petri Dish - A Ruby library for Evolutionary Algorithms
 
-> **Note**
+> [!IMPORTANT]\
 > `gem install petri_dish_lab` to install the gem, _not_ `petri_dish`.
 
 ## Introduction
@@ -111,9 +111,9 @@ Here are the necessary technical properties required when defining a fitness fun
 
 ## Install and Setup
 
-> **Warning**
-> The name of the _repo_ is `petri_dish`.
-> The name of the _module_ is `PetriDish`.
+> [!WARNING]\
+> The name of the _repo_ is `petri_dish`.\
+> The name of the _module_ is `PetriDish`.\
 > The name of the _gem_ is `petri_dish_lab`.
 
 You can install `petri_dish_lab` as a gem in your application. Add this line to your application's Gemfile:
