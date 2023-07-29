@@ -111,9 +111,9 @@ Here are the necessary technical properties required when defining a fitness fun
 ## Install and Setup
 
 > [!WARNING]\
-> The name of the _gem_ is `petri_dish_lab`.
-> The name of the _repo_ is `petri_dish`.\
-> The name of the _module_ is `PetriDish`.\
+> The name of the _gem_ is `petri_dish_lab`. \
+> The name of the _repo_ is `petri_dish`. \
+> The name of the _module_ is `PetriDish`.
 
 You can install `petri_dish_lab` as a gem in your application. Add this line to your application's Gemfile:
 
