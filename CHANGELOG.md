@@ -4,6 +4,18 @@
 ### Fixed
 ### Removed
 
+## [0.2.0]
+### Added
+- [Documentation] - Each example now has a README file with a description of the problem and the solution
+
+### Changed
+- [Configuration] - All `_callback` methods in `Configuration` can now be `nil` (i.e., optional)
+- [Configuration] - Renamed `Configuration#next_generation_callback` to `Configuration#generation_start_callback`
+
+### Removed
+- [Configuration] - Removed `Configuration#target_genes`
+- [API] - `Member#fitness_function` method is not exposed publicly anymore
+
 ## [0.1.1] - 2023-07-26
 
 ### Added
