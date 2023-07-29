@@ -2,7 +2,6 @@
 
 <p align="center">
   <img src="result.png" style="display: block; margin: 0 auto 10px auto;">
-  <img src="montage.png" style="display: block; margin: 0 auto;">
 </p>
 
 The `low_poly_image_reconstruction.rb` script demonstrates a use of the Petri Dish library for generating a low-poly representation of an image. It gives us a glimpse of the potential applications of genetic algorithms in creative digital tasks.
@@ -26,3 +25,7 @@ bundle exec ruby <PATH_TO_SCRIPT>/low_poly_image_reconstruction.rb
 ```
 
 Remember, this script requires the RMagick and Delaunator libraries for image processing and triangulation. These will be installed automatically via an inline Gemfile. It reads an input image and saves the progressively evolved images to a specified output directory. 
+
+<p align="center">
+  <img src="montage.png" style="display: block; margin: 0 auto;">
+</p>
