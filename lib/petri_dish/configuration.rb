@@ -5,7 +5,6 @@ module PetriDish
       :mutation_rate,
       :genetic_material,
       :elitism_rate,
-      :target_genes,
       :max_generations,
       :parents_selection_function,
       :crossover_function,
@@ -30,7 +29,6 @@ module PetriDish
       @mutation_rate = default_mutation_rate
       @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
-      @target_genes = default_target_genes
       @fitness_function = default_fitness_function
       @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
@@ -49,7 +47,6 @@ module PetriDish
       raise ArgumentError, "mutation_rate must be between 0 and 1" unless mutation_rate >= 0 && mutation_rate <= 1
       raise ArgumentError, "elitism_rate must be between 0 and 1" unless elitism_rate >= 0 && elitism_rate <= 1
       raise ArgumentError, "genetic_material must be an Array" unless genetic_material.is_a?(Array)
-      # raise ArgumentError, "target_genes must be an Array" unless target_genes.is_a?(Array)
       raise ArgumentError, "fitness_function must respond to :call" unless fitness_function.respond_to?(:call)
       raise ArgumentError, "parents_selection_function must respond to :call" unless parents_selection_function.respond_to?(:call)
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
@@ -68,7 +65,6 @@ module PetriDish
       @mutation_rate = default_mutation_rate
       @elitism_rate = default_elitism_rate
       @genetic_material = default_genetic_material
-      @target_genes = default_target_genes
       @fitness_function = default_fitness_function
       @parents_selection_function = default_parents_selection_function
       @crossover_function = default_crossover_function
@@ -97,8 +93,6 @@ module PetriDish
     def default_elitism_rate = 0.00
 
     def default_genetic_material = []
-
-    def default_target_genes = nil
 
     def default_fitness_function = ->(_member) { raise ArgumentError, "fitness_function must be set" }
 

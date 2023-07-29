@@ -4,9 +4,9 @@ require_relative "../lib/petri_dish"
 target_genes = "the quick brown fox jumped over the lazy white dog".chars
 genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
 
-def genes_match_target_end_condition_function(configuration)
+def genes_match_target_end_condition_function(target_genes)
   ->(member) do
-    member.genes == configuration.target_genes
+    member.genes == target_genes
   end
 end
 
@@ -16,9 +16,9 @@ def twenty_percent_tournament_function(configuration)
   end
 end
 
-def exponential_fitness_function(configuration)
+def exponential_fitness_function(target_genes)
   ->(member) do
-    member.genes.zip(configuration.target_genes).map do |target_gene, member_gene|
+    member.genes.zip(target_genes).map do |target_gene, member_gene|
       (target_gene == member_gene) ? 1 : 0
     end.sum**3
   end
@@ -49,12 +49,11 @@ configuration = PetriDish::Configuration.configure do |config|
   config.population_size = 250
   config.mutation_rate = 0.005
   config.genetic_material = genetic_material
-  config.target_genes = target_genes
   config.parents_selection_function = twenty_percent_tournament_function(config)
-  config.fitness_function = exponential_fitness_function(config)
+  config.fitness_function = exponential_fitness_function(target_genes)
   config.crossover_function = random_midpoint_crossover_function(config)
   config.mutation_function = random_mutation_function(config)
-  config.end_condition_function = genes_match_target_end_condition_function(config)
+  config.end_condition_function = genes_match_target_end_condition_function(target_genes)
   config.highest_fitness_callback = ->(member) { puts "Highest fitness: #{member.fitness} (#{member})" }
 end
 
