@@ -1,5 +1,5 @@
 # require "petri_dish" # Uncomment this line and comment/remove the line below if you're using Petri Dish as a gem
-require_relative "../lib/petri_dish"
+require_relative "../../lib/petri_dish"
 require "csv"
 
 XLIMIT = 10

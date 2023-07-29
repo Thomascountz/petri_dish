@@ -1,0 +1,194 @@
+I, [2023-07-30T01:12:22.091277 #3193]  INFO -- : Run started.
+I, [2023-07-30T01:12:22.091345 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":0,"highest_fitness":0,"elapsed_time":0.0,"last_fitness_increase":0}
+Highest fitness: 125 (frzwpkkjdmylowlznuvqrooipxlgvfwjmjgn avcdckktvtbgl)
+I, [2023-07-30T01:12:22.093669 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":0,"highest_fitness":125,"elapsed_time":0.0,"last_fitness_increase":0}
+Highest fitness: 343 (qkkgq riiekcnwflqwmnmqgbernbeerdseqhhxzopvhzilkax )
+I, [2023-07-30T01:12:22.093717 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":0,"highest_fitness":343,"elapsed_time":0.0,"last_fitness_increase":0}
+Highest fitness: 512 (npfobknlonwef slikvmjciifg zvmzgbhelqsky dhwbartys)
+I, [2023-07-30T01:12:22.093840 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":0,"highest_fitness":512,"elapsed_time":0.0,"last_fitness_increase":0}
+Highest fitness: 729 (qkkgq riiekcnwflqwmnmqgbernbeerdcde rivyvndfhrnzon)
+I, [2023-07-30T01:12:22.096506 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":0,"highest_fitness":729,"elapsed_time":0.01,"last_fitness_increase":0}
+I, [2023-07-30T01:12:22.099678 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":1,"highest_fitness":729,"elapsed_time":0.01,"last_fitness_increase":0}
+Highest fitness: 1000 (qkkgq riiekcnwflqwmnmqgbernbeer cde rivyvnwfhrnzon)
+I, [2023-07-30T01:12:22.100329 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":1,"highest_fitness":1000,"elapsed_time":0.01,"last_fitness_increase":1}
+Highest fitness: 1331 (qkkgq riiekcnwflqwmnmqgbernbeerdcde yavy dhwbartys)
+I, [2023-07-30T01:12:22.103838 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":1,"highest_fitness":1331,"elapsed_time":0.01,"last_fitness_increase":1}
+I, [2023-07-30T01:12:22.105341 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":2,"highest_fitness":1331,"elapsed_time":0.01,"last_fitness_increase":1}
+Highest fitness: 1728 (qkkgq riiekcnwflqwmnmqgbernbeer cde ravy dhwbartys)
+I, [2023-07-30T01:12:22.106385 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":2,"highest_fitness":1728,"elapsed_time":0.02,"last_fitness_increase":2}
+Highest fitness: 2197 (qkkgq riiekcnwflqwmnmqgbernbeerdcde yavy dhwtetoqs)
+I, [2023-07-30T01:12:22.108487 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":2,"highest_fitness":2197,"elapsed_time":0.02,"last_fitness_increase":2}
+I, [2023-07-30T01:12:22.112715 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":3,"highest_fitness":2197,"elapsed_time":0.02,"last_fitness_increase":2}
+Highest fitness: 2744 (qkkgq riiekcnwflqwmnmqgbernbeerdcde yavy dhwtedtot)
+I, [2023-07-30T01:12:22.112988 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":3,"highest_fitness":2744,"elapsed_time":0.02,"last_fitness_increase":3}
+I, [2023-07-30T01:12:22.118215 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":4,"highest_fitness":2744,"elapsed_time":0.03,"last_fitness_increase":3}
+Highest fitness: 4096 (lcdwqh wfifri slikvmjciifg tverdcde yavy dhwtedtot)
+I, [2023-07-30T01:12:22.118650 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":4,"highest_fitness":4096,"elapsed_time":0.03,"last_fitness_increase":4}
+I, [2023-07-30T01:12:22.123786 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":5,"highest_fitness":4096,"elapsed_time":0.03,"last_fitness_increase":4}
+I, [2023-07-30T01:12:22.129645 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":6,"highest_fitness":4096,"elapsed_time":0.04,"last_fitness_increase":4}
+Highest fitness: 4913 (lcdwqu wfifri slikvmjciifg tverdcde yavy dhwterzon)
+I, [2023-07-30T01:12:22.130801 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":6,"highest_fitness":4913,"elapsed_time":0.04,"last_fitness_increase":6}
+I, [2023-07-30T01:12:22.135309 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":7,"highest_fitness":4913,"elapsed_time":0.04,"last_fitness_increase":6}
+Highest fitness: 5832 (lcdwqu wfifri slikvmjcipfg tverdcde yavy dhwtedtot)
+I, [2023-07-30T01:12:22.135978 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":7,"highest_fitness":5832,"elapsed_time":0.04,"last_fitness_increase":7}
+I, [2023-07-30T01:12:22.141220 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":8,"highest_fitness":5832,"elapsed_time":0.05,"last_fitness_increase":7}
+Highest fitness: 6859 (lcdwqu wflfri slikvmjciber tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.141638 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":8,"highest_fitness":6859,"elapsed_time":0.05,"last_fitness_increase":8}
+I, [2023-07-30T01:12:22.146748 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":9,"highest_fitness":6859,"elapsed_time":0.06,"last_fitness_increase":8}
+Highest fitness: 8000 (lcdwqu wfzfri sliovmjcibeg tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.147781 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":9,"highest_fitness":8000,"elapsed_time":0.06,"last_fitness_increase":9}
+I, [2023-07-30T01:12:22.154909 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":10,"highest_fitness":8000,"elapsed_time":0.06,"last_fitness_increase":9}
+Highest fitness: 9261 (lcdwquiwfzfri sliovmjcibeg tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.159993 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":10,"highest_fitness":9261,"elapsed_time":0.07,"last_fitness_increase":10}
+I, [2023-07-30T01:12:22.160537 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":11,"highest_fitness":9261,"elapsed_time":0.07,"last_fitness_increase":10}
+I, [2023-07-30T01:12:22.166475 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":12,"highest_fitness":9261,"elapsed_time":0.08,"last_fitness_increase":10}
+Highest fitness: 10648 (lcdwquiwfzfri sliov jcibeg tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.167101 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":12,"highest_fitness":10648,"elapsed_time":0.08,"last_fitness_increase":12}
+I, [2023-07-30T01:12:22.172147 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":13,"highest_fitness":10648,"elapsed_time":0.08,"last_fitness_increase":12}
+Highest fitness: 12167 (lcewquiwfzfri sliovmjgipeg tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.172773 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":13,"highest_fitness":12167,"elapsed_time":0.08,"last_fitness_increase":13}
+I, [2023-07-30T01:12:22.178224 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":14,"highest_fitness":12167,"elapsed_time":0.09,"last_fitness_increase":13}
+Highest fitness: 13824 (lcewquiwfzfri sliov jcipeg tver cde ravy dhwterzon)
+I, [2023-07-30T01:12:22.178699 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":14,"highest_fitness":13824,"elapsed_time":0.09,"last_fitness_increase":14}
+I, [2023-07-30T01:12:22.184000 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":15,"highest_fitness":13824,"elapsed_time":0.09,"last_fitness_increase":14}
+Highest fitness: 15625 (lcewquiwfzfri sliov jcipeg tver cde ravy dhiterzon)
+I, [2023-07-30T01:12:22.184364 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":15,"highest_fitness":15625,"elapsed_time":0.09,"last_fitness_increase":15}
+I, [2023-07-30T01:12:22.189991 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":16,"highest_fitness":15625,"elapsed_time":0.1,"last_fitness_increase":15}
+Highest fitness: 17576 (lcewquiwfzfri sl ov jcipeg tver cde razy dhiterzon)
+I, [2023-07-30T01:12:22.190672 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":16,"highest_fitness":17576,"elapsed_time":0.1,"last_fitness_increase":16}
+I, [2023-07-30T01:12:22.196044 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":17,"highest_fitness":17576,"elapsed_time":0.1,"last_fitness_increase":16}
+Highest fitness: 19683 (ccewquiwfzfri nliov jcipeg wver tde ravy dhiterzon)
+I, [2023-07-30T01:12:22.196754 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":17,"highest_fitness":19683,"elapsed_time":0.11,"last_fitness_increase":17}
+I, [2023-07-30T01:12:22.201594 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":18,"highest_fitness":19683,"elapsed_time":0.11,"last_fitness_increase":17}
+Highest fitness: 21952 (ccewquiwfzfri nliov jcipeg wver tde razy dhiterzon)
+I, [2023-07-30T01:12:22.201980 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":18,"highest_fitness":21952,"elapsed_time":0.11,"last_fitness_increase":18}
+I, [2023-07-30T01:12:22.210556 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":19,"highest_fitness":21952,"elapsed_time":0.12,"last_fitness_increase":18}
+I, [2023-07-30T01:12:22.216166 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":20,"highest_fitness":21952,"elapsed_time":0.12,"last_fitness_increase":18}
+Highest fitness: 24389 (ccewquiwfzfri nliov jcmpeg wver tde razy dhiterzon)
+I, [2023-07-30T01:12:22.217913 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":20,"highest_fitness":24389,"elapsed_time":0.13,"last_fitness_increase":20}
+I, [2023-07-30T01:12:22.221967 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":21,"highest_fitness":24389,"elapsed_time":0.13,"last_fitness_increase":20}
+Highest fitness: 27000 (ccewquiwfzfri nliov jcmpeg wver tde razy dhiterdon)
+I, [2023-07-30T01:12:22.222789 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":21,"highest_fitness":27000,"elapsed_time":0.13,"last_fitness_increase":21}
+I, [2023-07-30T01:12:22.227575 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":22,"highest_fitness":27000,"elapsed_time":0.14,"last_fitness_increase":21}
+I, [2023-07-30T01:12:22.233469 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":23,"highest_fitness":27000,"elapsed_time":0.14,"last_fitness_increase":21}
+Highest fitness: 29791 (ccewquiwfzfri nliov jcmpeg over tde razy dhiterdox)
+I, [2023-07-30T01:12:22.233861 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":23,"highest_fitness":29791,"elapsed_time":0.14,"last_fitness_increase":23}
+I, [2023-07-30T01:12:22.238948 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":24,"highest_fitness":29791,"elapsed_time":0.15,"last_fitness_increase":23}
+Highest fitness: 32768 (cce quiwfzfri nliov jcmpeg over tde razy dhiterdox)
+I, [2023-07-30T01:12:22.240912 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":24,"highest_fitness":32768,"elapsed_time":0.15,"last_fitness_increase":24}
+I, [2023-07-30T01:12:22.244487 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":25,"highest_fitness":32768,"elapsed_time":0.15,"last_fitness_increase":24}
+I, [2023-07-30T01:12:22.250402 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":26,"highest_fitness":32768,"elapsed_time":0.16,"last_fitness_increase":24}
+Highest fitness: 35937 (cce quiwfzfri nliov jcmpeg over tde razy dhiterdog)
+I, [2023-07-30T01:12:22.254894 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":26,"highest_fitness":35937,"elapsed_time":0.16,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.255873 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":27,"highest_fitness":35937,"elapsed_time":0.16,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.262120 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":28,"highest_fitness":35937,"elapsed_time":0.17,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.267740 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":29,"highest_fitness":35937,"elapsed_time":0.18,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.273238 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":30,"highest_fitness":35937,"elapsed_time":0.18,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.279191 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":31,"highest_fitness":35937,"elapsed_time":0.19,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.290059 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":32,"highest_fitness":35937,"elapsed_time":0.2,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.296655 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":33,"highest_fitness":35937,"elapsed_time":0.21,"last_fitness_increase":26}
+I, [2023-07-30T01:12:22.302554 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":34,"highest_fitness":35937,"elapsed_time":0.21,"last_fitness_increase":26}
+Highest fitness: 39304 (cce quicfzfriwnliov jcmpeg over tde razy dhiterdox)
+I, [2023-07-30T01:12:22.305882 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":34,"highest_fitness":39304,"elapsed_time":0.21,"last_fitness_increase":34}
+I, [2023-07-30T01:12:22.308815 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":35,"highest_fitness":39304,"elapsed_time":0.22,"last_fitness_increase":34}
+I, [2023-07-30T01:12:22.315809 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":36,"highest_fitness":39304,"elapsed_time":0.22,"last_fitness_increase":34}
+I, [2023-07-30T01:12:22.323678 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":37,"highest_fitness":39304,"elapsed_time":0.23,"last_fitness_increase":34}
+I, [2023-07-30T01:12:22.330791 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":38,"highest_fitness":39304,"elapsed_time":0.24,"last_fitness_increase":34}
+Highest fitness: 42875 (cce quicfzfriwnlfov jcmpeg over tde razy dhiterdon)
+I, [2023-07-30T01:12:22.331984 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":38,"highest_fitness":42875,"elapsed_time":0.24,"last_fitness_increase":38}
+I, [2023-07-30T01:12:22.337603 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":39,"highest_fitness":42875,"elapsed_time":0.25,"last_fitness_increase":38}
+Highest fitness: 46656 (cce quicfzfriwn iov jcmped over tde razy dhiterdon)
+I, [2023-07-30T01:12:22.339299 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":39,"highest_fitness":46656,"elapsed_time":0.25,"last_fitness_increase":39}
+I, [2023-07-30T01:12:22.345225 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":40,"highest_fitness":46656,"elapsed_time":0.25,"last_fitness_increase":39}
+Highest fitness: 50653 (cce quicfzfrownlfov jcmped over tde razy dhiterdon)
+I, [2023-07-30T01:12:22.347227 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":40,"highest_fitness":50653,"elapsed_time":0.26,"last_fitness_increase":40}
+I, [2023-07-30T01:12:22.351709 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":41,"highest_fitness":50653,"elapsed_time":0.26,"last_fitness_increase":40}
+Highest fitness: 54872 (cce quicfzfrown fov jcmped over tde razy dhiterdon)
+I, [2023-07-30T01:12:22.357218 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":41,"highest_fitness":54872,"elapsed_time":0.27,"last_fitness_increase":41}
+I, [2023-07-30T01:12:22.358440 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":42,"highest_fitness":54872,"elapsed_time":0.27,"last_fitness_increase":41}
+I, [2023-07-30T01:12:22.364078 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":43,"highest_fitness":54872,"elapsed_time":0.27,"last_fitness_increase":41}
+I, [2023-07-30T01:12:22.369654 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":44,"highest_fitness":54872,"elapsed_time":0.28,"last_fitness_increase":41}
+Highest fitness: 59319 (cce quicfzfrown fov jcmped over tde razy whiterdon)
+I, [2023-07-30T01:12:22.375405 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":44,"highest_fitness":59319,"elapsed_time":0.28,"last_fitness_increase":44}
+I, [2023-07-30T01:12:22.375703 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":45,"highest_fitness":59319,"elapsed_time":0.28,"last_fitness_increase":44}
+I, [2023-07-30T01:12:22.381433 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":46,"highest_fitness":59319,"elapsed_time":0.29,"last_fitness_increase":44}
+Highest fitness: 64000 (cce quicf frown fov jcmped over tde razy whiterdox)
+I, [2023-07-30T01:12:22.383302 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":46,"highest_fitness":64000,"elapsed_time":0.29,"last_fitness_increase":46}
+I, [2023-07-30T01:12:22.387588 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":47,"highest_fitness":64000,"elapsed_time":0.3,"last_fitness_increase":46}
+I, [2023-07-30T01:12:22.393407 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":48,"highest_fitness":64000,"elapsed_time":0.3,"last_fitness_increase":46}
+Highest fitness: 68921 (cce quicf frown fov jcmped over the razy whiterdox)
+I, [2023-07-30T01:12:22.398133 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":48,"highest_fitness":68921,"elapsed_time":0.31,"last_fitness_increase":48}
+I, [2023-07-30T01:12:22.400243 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":49,"highest_fitness":68921,"elapsed_time":0.31,"last_fitness_increase":48}
+I, [2023-07-30T01:12:22.406321 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":50,"highest_fitness":68921,"elapsed_time":0.31,"last_fitness_increase":48}
+I, [2023-07-30T01:12:22.412106 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":51,"highest_fitness":68921,"elapsed_time":0.32,"last_fitness_increase":48}
+I, [2023-07-30T01:12:22.418482 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":52,"highest_fitness":68921,"elapsed_time":0.33,"last_fitness_increase":48}
+I, [2023-07-30T01:12:22.424183 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":53,"highest_fitness":68921,"elapsed_time":0.33,"last_fitness_increase":48}
+Highest fitness: 74088 (cce quicf frown fov jcmped over the lazy whiterdon)
+I, [2023-07-30T01:12:22.424324 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":53,"highest_fitness":74088,"elapsed_time":0.33,"last_fitness_increase":53}
+I, [2023-07-30T01:12:22.431837 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":54,"highest_fitness":74088,"elapsed_time":0.34,"last_fitness_increase":53}
+I, [2023-07-30T01:12:22.437799 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":55,"highest_fitness":74088,"elapsed_time":0.35,"last_fitness_increase":53}
+I, [2023-07-30T01:12:22.451459 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":56,"highest_fitness":74088,"elapsed_time":0.36,"last_fitness_increase":53}
+I, [2023-07-30T01:12:22.457868 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":57,"highest_fitness":74088,"elapsed_time":0.37,"last_fitness_increase":53}
+Highest fitness: 79507 (cce quicf frown fox jcmped over the lazy whiterdon)
+I, [2023-07-30T01:12:22.460686 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":57,"highest_fitness":79507,"elapsed_time":0.37,"last_fitness_increase":57}
+I, [2023-07-30T01:12:22.464659 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":58,"highest_fitness":79507,"elapsed_time":0.37,"last_fitness_increase":57}
+I, [2023-07-30T01:12:22.470340 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":59,"highest_fitness":79507,"elapsed_time":0.38,"last_fitness_increase":57}
+I, [2023-07-30T01:12:22.476021 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":60,"highest_fitness":79507,"elapsed_time":0.38,"last_fitness_increase":57}
+Highest fitness: 85184 (tce quicf frown fox jcmped over the lazy whiterdon)
+I, [2023-07-30T01:12:22.477398 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":60,"highest_fitness":85184,"elapsed_time":0.39,"last_fitness_increase":60}
+I, [2023-07-30T01:12:22.482212 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":61,"highest_fitness":85184,"elapsed_time":0.39,"last_fitness_increase":60}
+I, [2023-07-30T01:12:22.487799 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":62,"highest_fitness":85184,"elapsed_time":0.4,"last_fitness_increase":60}
+Highest fitness: 91125 (the quics frown fox jcmped over the lazy whiterdon)
+I, [2023-07-30T01:12:22.490529 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":62,"highest_fitness":91125,"elapsed_time":0.4,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.494072 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":63,"highest_fitness":91125,"elapsed_time":0.4,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.499682 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":64,"highest_fitness":91125,"elapsed_time":0.41,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.505856 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":65,"highest_fitness":91125,"elapsed_time":0.41,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.511489 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":66,"highest_fitness":91125,"elapsed_time":0.42,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.517122 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":67,"highest_fitness":91125,"elapsed_time":0.43,"last_fitness_increase":62}
+I, [2023-07-30T01:12:22.523410 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":68,"highest_fitness":91125,"elapsed_time":0.43,"last_fitness_increase":62}
+Highest fitness: 97336 (the quics brown fox jcmped over the lazy whiterdon)
+I, [2023-07-30T01:12:22.526540 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":68,"highest_fitness":97336,"elapsed_time":0.44,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.529191 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":69,"highest_fitness":97336,"elapsed_time":0.44,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.544400 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":70,"highest_fitness":97336,"elapsed_time":0.45,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.549967 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":71,"highest_fitness":97336,"elapsed_time":0.46,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.556576 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":72,"highest_fitness":97336,"elapsed_time":0.47,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.562709 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":73,"highest_fitness":97336,"elapsed_time":0.47,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.567740 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":74,"highest_fitness":97336,"elapsed_time":0.48,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.573774 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":75,"highest_fitness":97336,"elapsed_time":0.48,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.579280 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":76,"highest_fitness":97336,"elapsed_time":0.49,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.585746 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":77,"highest_fitness":97336,"elapsed_time":0.49,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.592322 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":78,"highest_fitness":97336,"elapsed_time":0.5,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.598061 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":79,"highest_fitness":97336,"elapsed_time":0.51,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.606232 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":80,"highest_fitness":97336,"elapsed_time":0.51,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.614236 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":81,"highest_fitness":97336,"elapsed_time":0.52,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.621633 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":82,"highest_fitness":97336,"elapsed_time":0.53,"last_fitness_increase":68}
+I, [2023-07-30T01:12:22.627619 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":83,"highest_fitness":97336,"elapsed_time":0.54,"last_fitness_increase":68}
+Highest fitness: 103823 (the quics brown fox jcmped over the lazy white don)
+I, [2023-07-30T01:12:22.628833 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":83,"highest_fitness":103823,"elapsed_time":0.54,"last_fitness_increase":83}
+I, [2023-07-30T01:12:22.634844 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":84,"highest_fitness":103823,"elapsed_time":0.54,"last_fitness_increase":83}
+I, [2023-07-30T01:12:22.641883 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":85,"highest_fitness":103823,"elapsed_time":0.55,"last_fitness_increase":83}
+Highest fitness: 110592 (the quics brown fox jumped over the lazy white don)
+I, [2023-07-30T01:12:22.642140 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":85,"highest_fitness":110592,"elapsed_time":0.55,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.648572 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":86,"highest_fitness":110592,"elapsed_time":0.56,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.653734 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":87,"highest_fitness":110592,"elapsed_time":0.56,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.660371 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":88,"highest_fitness":110592,"elapsed_time":0.57,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.667228 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":89,"highest_fitness":110592,"elapsed_time":0.58,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.674291 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":90,"highest_fitness":110592,"elapsed_time":0.58,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.681756 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":91,"highest_fitness":110592,"elapsed_time":0.59,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.688350 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":92,"highest_fitness":110592,"elapsed_time":0.6,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.694950 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":93,"highest_fitness":110592,"elapsed_time":0.6,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.700322 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":94,"highest_fitness":110592,"elapsed_time":0.61,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.706848 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":95,"highest_fitness":110592,"elapsed_time":0.62,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.713417 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":96,"highest_fitness":110592,"elapsed_time":0.62,"last_fitness_increase":85}
+I, [2023-07-30T01:12:22.720014 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":97,"highest_fitness":110592,"elapsed_time":0.63,"last_fitness_increase":85}
+Highest fitness: 117649 (the quick brown fox jumped over the lazy white don)
+I, [2023-07-30T01:12:22.725963 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":97,"highest_fitness":117649,"elapsed_time":0.63,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.728075 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":98,"highest_fitness":117649,"elapsed_time":0.64,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.734708 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":99,"highest_fitness":117649,"elapsed_time":0.64,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.741613 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":100,"highest_fitness":117649,"elapsed_time":0.65,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.748338 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":101,"highest_fitness":117649,"elapsed_time":0.66,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.769795 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":102,"highest_fitness":117649,"elapsed_time":0.68,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.776134 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":103,"highest_fitness":117649,"elapsed_time":0.68,"last_fitness_increase":97}
+I, [2023-07-30T01:12:22.784354 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":104,"highest_fitness":117649,"elapsed_time":0.69,"last_fitness_increase":97}
+Highest fitness: 125000 (the quick brown fox jumped over the lazy white dog)
+I, [2023-07-30T01:12:22.786897 #3193]  INFO -- : {"id":"57370bc2-76bb-44a4-855d-318f3439e972","generation_count":104,"highest_fitness":125000,"elapsed_time":0.7,"last_fitness_increase":104}

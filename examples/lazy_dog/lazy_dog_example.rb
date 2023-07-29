@@ -1,5 +1,5 @@
 # require "petri_dish" # Uncomment this line and comment/remove the line below if you're using Petri Dish as a gem
-require_relative "../lib/petri_dish"
+require_relative "../../lib/petri_dish"
 
 target_genes = "the quick brown fox jumped over the lazy white dog".chars
 genetic_material = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", " "]
@@ -45,6 +45,7 @@ def random_mutation_function(configuration)
 end
 
 configuration = PetriDish::Configuration.configure do |config|
+  config.logger = Logger.new("/dev/null")
   config.max_generations = 5000
   config.population_size = 250
   config.mutation_rate = 0.005
