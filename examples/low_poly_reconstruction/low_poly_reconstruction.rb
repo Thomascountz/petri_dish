@@ -12,7 +12,7 @@ end
 LOW_POLY_RECONSTUCTION_PATH = "examples/low_poly_reconstruction".freeze
 INPUT_IMAGE_PATH = "#{LOW_POLY_RECONSTUCTION_PATH}/ruby.svg".freeze
 CONVERTED_INPUT_IMAGE_PATH = "#{LOW_POLY_RECONSTUCTION_PATH}/input_convert.png".freeze
-OUT_DIR = "#{LOW_POLY_RECONSTUCTION_PATH}/out".freeze
+OUT_DIR = "#{LOW_POLY_RECONSTUCTION_PATH}/out4".freeze
 IMAGE_HEIGHT_PX = 100
 IMAGE_WIDTH_PX = 100
 GREYSCALE_VALUES = (0..255).to_a
@@ -42,16 +42,16 @@ class LowPolyImageReconstruction
   def configuration
     PetriDish::Configuration.configure do |config|
       config.population_size = 50
-      config.mutation_rate = 0.1
-      config.elitism_rate = 0.1
-      config.max_generations = 2500
+      config.mutation_rate = 0.05
+      config.elitism_rate = 0.05
+      config.max_generations = 5000
       config.fitness_function = calculate_fitness(target_image)
       config.parents_selection_function = roulette_wheel_parent_selection_function
       config.crossover_function = random_midpoint_crossover_function(config)
       config.mutation_function = nudge_mutation_function(config)
       config.highest_fitness_callback = ->(member) { save_image(member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)) }
       config.generation_start_callback = ->(current_generation) { generation_start_callback(current_generation) }
-      config.end_condition_function = ->(_member) { false }
+      config.end_condition_function = nil
     end
   end
 
@@ -117,9 +117,9 @@ class LowPolyImageReconstruction
       mutated_genes = member.genes.dup.map do |gene|
         if rand < configuration.mutation_rate
           Point.new(
-            gene.x + rand(-5..5) + point_jitter,
-            gene.y + rand(-5..5) + point_jitter,
-            (gene.grayscale + rand(-5..5)).clamp(0, 255)
+            gene.x + rand(-10..10) + point_jitter,
+            gene.y + rand(-10..10) + point_jitter,
+            (gene.grayscale + rand(-25..25)).clamp(0, 255)
           )
         else
           gene
@@ -133,7 +133,7 @@ class LowPolyImageReconstruction
     ->(member) do
       member_image = member_to_image(member, IMAGE_WIDTH_PX, IMAGE_HEIGHT_PX)
       # Difference is a tuple of [mean_error_per_pixel, normalized_mean_error, normalized_maximum_error]
-      1 / (target_image.difference(member_image)[0]**2) # Use the mean error per pixel as the fitness
+      (1.0 / target_image.difference(member_image)[1])**2 # Use the mean error per pixel as the fitness
     end
   end
 

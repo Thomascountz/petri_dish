@@ -26,7 +26,11 @@ module PetriDish
         max_generation_reached = false
 
         if metadata.generation_count.zero?
-          configuration.logger.info "Run started."
+          configuration.logger.info({run_started: Time.now}.to_json)
+          configuration.logger.info({population_size: configuration.population_size}.to_json)
+          configuration.logger.info({mutation_rate: configuration.mutation_rate}.to_json)
+          configuration.logger.info({elitism_rate: configuration.elitism_rate}.to_json)
+          configuration.logger.info({max_generations: configuration.max_generations}.to_json)
           metadata.start
         end
 
@@ -51,7 +55,7 @@ module PetriDish
               configuration.logger.info(metadata.to_json)
             end
 
-            if configuration.end_condition_function.call(mutated_child)
+            if configuration.end_condition_function&.call(mutated_child)
               configuration.end_condition_reached_callback&.call(mutated_child)
               end_condition_reached = true
             end
