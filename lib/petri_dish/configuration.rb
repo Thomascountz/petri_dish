@@ -22,6 +22,7 @@ module PetriDish
     end
 
     def initialize
+      # TODO: Add seed
       @logger = default_logger
       @max_generations = default_max_generations
       @population_size = default_population_size
@@ -48,7 +49,7 @@ module PetriDish
       raise ArgumentError, "parents_selection_function must respond to :call" unless parents_selection_function.respond_to?(:call)
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
       raise ArgumentError, "mutation_function must respond to :call" unless mutation_function.respond_to?(:call)
-      raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.respond_to?(:call)
+      raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.respond_to?(:call) || (end_condition_function.nil? && max_generations > 0)
       raise ArgumentError, "highest_fitness_callback must respond to :call" unless highest_fitness_callback.nil? || highest_fitness_callback.respond_to?(:call)
       raise ArgumentError, "max_generation_reached_callback must respond to :call" unless max_generation_reached_callback.nil? || max_generation_reached_callback.respond_to?(:call)
       raise ArgumentError, "generation_start_callback must respond to :call" unless generation_start_callback.nil? || generation_start_callback.respond_to?(:call)
@@ -96,14 +97,10 @@ module PetriDish
 
     def default_mutation_function = ->(_member) { raise ArgumentError, "mutation_function must be set" }
 
-    def default_end_condition_function = ->(_member) { false }
+    def default_end_condition_function = nil
 
     def default_highest_fitness_callback = nil
 
-    # TODO: We might want to consider whether we really want to use `exit` as a
-    # default callback. This will stop the entire Ruby process, which could be
-    # surprising behavior if the user of the library doesn't override these
-    # callbacks.
     def default_max_generation_reached_callback = nil
 
     def default_generation_start_callback = nil

@@ -1,0 +1,77 @@
+<head>
+  <style>
+    .slider-container {
+      width: 80%;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .slider {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    #slideContainer {
+      width: 100%;
+      margin: 0 auto 25px auto;
+    }
+
+    #slideContainer img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    #generation {
+      font-family: monospace;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 15px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<div class="slider-container">
+  <div id="slideContainer">
+    <img id="slide" src="https://raw.githubusercontent.com/Thomascountz/petri_dish/lowpoly_image_updated/examples/low_poly_reconstruction/out/gen-0000.png">
+    <p id="generation">Generation: 0000</p>
+  </div>
+  <input type="range" min="1" max="5000" value="1" class="slider" id="myRange">
+</div>
+
+<script>
+  var generationNumbers = ["0000", "0001", "0002", "0003", "0005", "0006",
+  "0007", "0008", "0009", "0010", "0012", "0013", "0014", "0015", "0016",
+  "0017", "0018", "0020", "0024", "0025", "0028", "0030", "0031", "0037",
+  "0039", "0041", "0043", "0044", "0047", "0051", "0053", "0055", "0058",
+  "0087", "0089", "0090", "0095", "0096", "0108", "0118", "0119", "0122",
+  "0124", "0131", "0137", "0141", "0146", "0159", "0162", "0173", "0175",
+  "0183", "0185", "0205", "0206", "0214", "0215", "0254", "0264", "0266",
+  "0280", "0287", "0295", "0296", "0297", "0377", "0388", "0415", "0501",
+  "0523", "0568", "0580", "0591", "0635", "0710", "0827", "0848", "0879",
+  "0885", "0911", "0920", "0937", "0963", "0985", "0992", "1008", "1060",
+  "1274", "1345", "1530", "1542", "1574", "1594", "1701", "1740", "1768",
+  "1812", "1899", "1945", "2113", "2208", "2296", "2404", "2464", "2509",
+  "2609", "2738", "2807", "2846", "2915", "3580", "3770", "3861", "3943",
+  "4193", "4405", "4598", "4782", "4929"]
+
+  var generations = generationNumbers.map(num => {
+    var img = new Image();
+    img.src = `https://raw.githubusercontent.com/Thomascountz/petri_dish/lowpoly_image_updated/examples/low_poly_reconstruction/out/gen-${num}.png`;
+    return img;
+  });
+
+  document.getElementById("myRange").max = generations.length;
+
+  document.getElementById("myRange").oninput = function () {
+    document.getElementById("slide").src = generations[this.value - 1].src;
+    var genNumber = generationNumbers[this.value - 1];
+    document.getElementById("generation").textContent = "Generation: " + genNumber;
+  }
+</script>

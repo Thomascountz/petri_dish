@@ -23,18 +23,14 @@ module PetriDish
       @last_fitness_increase = generation_count
     end
 
-    def to_h
+    def to_json
       {
         id: id,
-        generation_count: generation_count,
+        generation_count: generation_count.to_s.rjust(5, "0"),
         highest_fitness: highest_fitness,
-        elapsed_time: (Time.now - start_time).round(2),
-        last_fitness_increase: last_fitness_increase
-      }
-    end
-
-    def to_json
-      to_h.to_json
+        elapsed_time: sprintf("%.2f", (Time.now - start_time).round(2)),
+        last_fitness_increase: last_fitness_increase.to_s.rjust(5, "0")
+      }.to_json
     end
   end
 end
