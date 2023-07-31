@@ -25,7 +25,7 @@ The high-level steps of an evolutionary algorithm are:
 
 Petri Dish is built around a few key classes: `Configuration`, `Member`, `Metadata`, and `World`. 
 
-- `Configuration`: This class provides a way to configure the behavior of the evolutionary algorithm. It exposes various parameters like `population_size`, `mutation_rate`, `genetic_material`, and several callback functions that can be used to customize the evolution process. 
+- `Configuration`: This class provides a way to configure the behavior of the evolutionary algorithm. It exposes various parameters like `population_size`, `mutation_rate`, and several callback functions that can be used to customize the evolution process. 
 
 - `Member`: This class represents an individual in the population. It has a set of genes and a fitness value, which is computed by a fitness function provided in the configuration.
 
@@ -42,7 +42,6 @@ The `Configuration` class in Petri Dish allows you to customize various aspects 
 | `logger`                          | An object that responds to `:info` for logging purposes                                                                                | `Logger`                             |
 | `population_size`                 | The number of individuals in the population                                                                                            | `Integer`                            |
 | `mutation_rate`                   | The chance that a gene will change during mutation (between 0 and 1, inclusive)                                                        | `Float`                              |
-| `genetic_material`                | An array of possible gene values                                                                                                       | `Array[untyped]`                     |
 | `elitism_rate`                    | The proportion of the population preserved through elitism (between 0 and 1, inclusive)                                                | `Float`                              |
 | `max_generations`                 | The maximum number of generations to run the evolution for                                                                             | `Integer`                            |
 | `parents_selection_function`      | A function used to select parents for crossover                                                                                        | `Proc[Array[Member], Array[Member]]` |

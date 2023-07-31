@@ -117,7 +117,6 @@ configuration = PetriDish::Configuration.configure do |config|
   config.max_generations = 100
   config.population_size = 100
   config.mutation_rate = 0.01
-  config.genetic_material = GENETIC_MATERIAL
   config.mutation_function = swap_mutation_function(config)
   config.fitness_function = fitness_function
   config.parents_selection_function = twenty_percent_tournament(config)

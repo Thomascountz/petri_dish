@@ -15,7 +15,6 @@ RSpec.describe PetriDish::World do
     allow(configuration).to receive(:population_size).and_return(1)
     allow(configuration).to receive(:mutation_rate).and_return(0.005)
     allow(configuration).to receive(:elitism_rate).and_return(0.00)
-    allow(configuration).to receive(:genetic_material).and_return([])
     allow(configuration).to receive(:parents_selection_function).and_return(->(_members) { double(PetriDish::Member, fitness: 0.1) })
     allow(configuration).to receive(:crossover_function).and_return(->(_members) { double(PetriDish::Member, fitness: 0.1) })
     allow(configuration).to receive(:mutation_function).and_return(->(_member) { double(PetriDish::Member, fitness: 0.1) })
