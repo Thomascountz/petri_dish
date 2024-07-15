@@ -1,27 +1,22 @@
 name: Ruby
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-
   pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
-    strategy:
-      matrix:
-        ruby:
-          - '3.2.0'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ matrix.ruby }}
+        ruby-version: .ruby-version
         bundler-cache: true
-    - name: Run the default task
+    - name: Run rake
       run: bundle exec rake
