@@ -44,11 +44,12 @@ RSpec.describe PetriDish::World do
   end
 
   context "when max_generations is more than zero" do
-    it "calls run recusively until generation_count reaches max_generations" do
+    it "runs one iteration per generation until generation_count reaches max_generations" do
       allow(configuration).to receive(:end_condition_function).and_return(->(_member) { false })
       allow(configuration).to receive(:max_generations).and_return(2)
+      allow(configuration).to receive(:generation_start_callback).and_return(generation_start_callback = ->(_generation_count) { :noop })
 
-      expect(described_class).to receive(:run).exactly(3).times.and_call_original
+      expect(generation_start_callback).to receive(:call).exactly(3).times.and_call_original
 
       described_class.run(members: members, configuration: configuration)
     end
