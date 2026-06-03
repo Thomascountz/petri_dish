@@ -45,7 +45,7 @@ def random_mutation_function(configuration, genetic_material)
 end
 
 configuration = PetriDish::Configuration.configure do |config|
-  config.logger = Logger.new("/dev/null")
+  config.logger = Logger.new(File::NULL)
   config.max_generations = 5000
   config.population_size = 250
   config.mutation_rate = 0.005

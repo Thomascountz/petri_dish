@@ -43,13 +43,13 @@ module PetriDish
       raise ArgumentError, "logger must respond to :info" unless logger.respond_to?(:info)
       raise ArgumentError, "max_generations must be greater than 0" unless max_generations > 0
       raise ArgumentError, "population_size must be greater than 0" unless population_size > 0
-      raise ArgumentError, "mutation_rate must be between 0 and 1" unless mutation_rate >= 0 && mutation_rate <= 1
-      raise ArgumentError, "elitism_rate must be between 0 and 1" unless elitism_rate >= 0 && elitism_rate <= 1
+      raise ArgumentError, "mutation_rate must be between 0 and 1" unless mutation_rate.between?(0, 1)
+      raise ArgumentError, "elitism_rate must be between 0 and 1" unless elitism_rate.between?(0, 1)
       raise ArgumentError, "fitness_function must respond to :call" unless fitness_function.respond_to?(:call)
       raise ArgumentError, "parents_selection_function must respond to :call" unless parents_selection_function.respond_to?(:call)
       raise ArgumentError, "crossover_function must respond to :call" unless crossover_function.respond_to?(:call)
       raise ArgumentError, "mutation_function must respond to :call" unless mutation_function.respond_to?(:call)
-      raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.respond_to?(:call) || (end_condition_function.nil? && max_generations > 0)
+      raise ArgumentError, "end_condition_function must respond to :call" unless end_condition_function.nil? || end_condition_function.respond_to?(:call)
       raise ArgumentError, "highest_fitness_callback must respond to :call" unless highest_fitness_callback.nil? || highest_fitness_callback.respond_to?(:call)
       raise ArgumentError, "max_generation_reached_callback must respond to :call" unless max_generation_reached_callback.nil? || max_generation_reached_callback.respond_to?(:call)
       raise ArgumentError, "generation_start_callback must respond to :call" unless generation_start_callback.nil? || generation_start_callback.respond_to?(:call)
