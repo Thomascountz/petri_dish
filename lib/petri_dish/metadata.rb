@@ -27,8 +27,8 @@ module PetriDish
       {
         id: id,
         generation_count: generation_count.to_s.rjust(5, "0"),
-        highest_fitness: highest_fitness,
-        elapsed_time: sprintf("%.2f", (Time.now - start_time).round(2)),
+        highest_fitness: highest_fitness.to_s.ljust(20, "0"),
+        elapsed_time: sprintf("%08.2f", (Time.now - start_time).round(2)),
         last_fitness_increase: last_fitness_increase.to_s.rjust(5, "0")
       }.to_json
     end
